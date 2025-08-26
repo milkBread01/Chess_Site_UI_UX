@@ -1,0 +1,13 @@
+A chess site aimed at people just starting out at learning chess, the site will have some reading material to help the user learn how the different pieces move and some strategies. 
+
+During the chess game, there will be visual aids to help the player remember the piece movement and be more aware of their moves consequences.
+
+	• GREEN - indicates a position to which your chosen piece is able to move.
+
+	• BLUE - indicates a position to which your piece is able to take an enemy piece
+
+	• RED - indicates a position to which your piece can move but may result in this piece being capturing by the enemy player.
+
+	• PURPLE - indicates a position to which your piece can move and take an enemy piece and will also result in your piece being put in danger of being taken in the next turn by the enemy piece
+
+	• GOLD - indicates a position to which your piece can move and will result in a check
