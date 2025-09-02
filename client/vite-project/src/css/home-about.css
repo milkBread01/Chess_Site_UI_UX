@@ -1,0 +1,163 @@
+.home-about{
+    width:90%;
+    display: block;
+    justify-content: center;
+    align-items: center;
+    margin:auto;
+    border-radius:1rem;
+    padding-bottom:1rem;
+}
+.header-section {
+    background-color: #353E43;
+    color: white;
+    padding: 3rem 0;
+    text-align: center;
+}
+
+.header2-type2 {
+    font-size: 2rem;
+    font-weight: 400;
+    letter-spacing: 0.1rem;
+    border: 2px solid white;
+    padding: 1rem 2rem;
+    display: inline-block;
+    background-color: transparent;
+}
+
+/* Content Section Base Styles */
+.content-section {
+    padding: 4rem 0;
+}
+
+.section-container {
+    max-width: 80%;
+    margin: 0 auto;
+    padding: 0 2rem;
+    display: flex;
+    align-items: center;
+    gap: 3rem;
+}
+
+.image-container,
+.description-container {
+    flex: 1;
+}
+
+.section-image {
+    width: 100%;
+    height: 300px;
+    background-color: #2c2c2c;
+    border: 2px solid #333;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ccc;
+    font-size: 1.2rem;
+    letter-spacing: 0.1rem;
+}
+
+.description-content {
+    padding: 2rem;
+}
+
+.description-title {
+    font-size: 1.5rem;
+    font-weight: 500;
+    margin-bottom: 1rem;
+    letter-spacing: 0.05rem;
+}
+
+.description-text {
+    font-size: 1rem;
+    line-height: 1.7;
+    margin-bottom: 1rem;
+}
+
+/* First Content Section - Light */
+.content-section-light {
+    background-color: #EAE0C8;
+    color: #2c2c2c;
+}
+
+.content-section-light .section-image {
+    border-color: #8B7355;
+    background-color: #D4C4A8;
+}
+
+.content-section-light .description-title {
+    color: #5A4A3A;
+}
+
+/* Second Content Section - Medium */
+.content-section-medium {
+    background-color: #B9D9EB;
+    color: #2c2c2c;
+}
+
+.content-section-medium .section-image {
+    border-color: #8B7A47;
+    background-color: #A68B4B;
+}
+
+.content-section-medium .description-title {
+    color: #4A3F2A;
+}
+
+/* Reverse layout for second section */
+.reverse {
+    flex-direction: row-reverse;
+}
+
+/* Responsive Design */
+@media (max-width: 968px) {
+    .home-about{
+        width:100%;
+    }
+    
+    .section-container {
+        flex-direction: column;
+        gap: 2rem;
+    }
+
+    .reverse {
+        flex-direction: column;
+    }
+
+    .header-container,
+    .section-container {
+        max-width: 90%;
+    }
+
+    .header2-type2 {
+        font-size: 1.6rem;
+        padding: 0.75rem 1.5rem;
+    }
+
+    .section-image {
+        height: 250px;
+    }
+}
+
+@media (max-width: 480px) {
+    .header2-type2 {
+        font-size: 1.3rem;
+        padding: 0.5rem 1rem;
+    }
+
+    .section-image {
+        height: 200px;
+        font-size: 1rem;
+    }
+
+    .description-content {
+        padding: 1rem;
+    }
+
+    .description-title {
+        font-size: 1.3rem;
+    }
+
+    .description-text {
+        font-size: 0.9rem;
+    }
+}
