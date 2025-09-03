@@ -1,0 +1,422 @@
+/* ===== GLOBAL STYLES ===== */
+* {
+    box-sizing: border-box;
+}
+
+:root {
+    --board-size: min(90vw, 90vh, 800px);
+    --square-size: calc((var(--board-size) - 2rem) / 11.6);
+    --gap: 0.4rem;
+    --label-size: clamp(0.8rem, 2vw, 1.1rem);
+    --light: #f5f1e6;
+    --dark: #d1b792;
+    --blue: #5b93ee;
+    --green: #6ce1ba;
+    --red: #ef4444;
+    --gold: #d4af37;
+    --label-color: #333;
+    --boardBackground: #B9D9EB;
+    --pageBackground: #353E43;
+    --border: 0.2rem;
+    --radius: 1rem;
+    --shadow: 0 0.5rem 1.25rem rgba(0,0,0,0.12);
+    --peripheralsMenu: #628699ba;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    background-color: var(--pageBackground);
+}
+
+/* ===== MAIN LAYOUT ===== */
+.game-main {
+    min-height: 100vh;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1rem;
+    overflow-x: hidden;
+    background-color: var(--pageBackground);
+}
+
+.game-peripherals-container {
+    width: 100%;
+    max-width: 1200px;
+    margin-bottom: 1rem;
+    padding: 0 1rem;
+}
+
+.game-container {
+    width: 100%;
+    max-width: 1200px;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    align-items: center;
+}
+
+.board-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+}
+
+.chess-board-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.move-container {
+    width: 100%;
+    max-width: 600px;
+    min-height: 200px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: var(--radius);
+    padding: 1rem;
+}
+
+.pieces-captured {
+    width: 100%;
+    max-width: 600px;
+    min-height: 60px;
+
+    border-radius: var(--radius);
+    padding: 0.5rem;
+}
+
+/* ===== PERIPHERALS MENU ===== */
+.peripherals-wrapper {
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+    background-color: var(--peripheralsMenu);
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.peripherals-layer-1 {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.game-total-time-container {
+    background-color: #353E43;
+    padding: 12px 24px;
+    border-radius: 6px;
+    border: 2px solid #F2F0EF;
+}
+
+.game-total-time-text {
+    color: #F2F0EF;
+    font-size: 1.4rem;
+    font-weight: bold;
+    margin: 0;
+    text-align: center;
+}
+
+.peripherals-layer-2 {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.pl2-section {
+    flex: 1;
+    min-width: 140px;
+    max-width: 200px;
+    display: flex;
+    justify-content: center;
+}
+
+.pl2-row {
+    background-color: #353E43;
+    border: 2px solid #F2F0EF;
+    border-radius: 6px;
+    padding: 0;
+    overflow: hidden;
+    width: 100%;
+}
+
+.pl2-username {
+    background-color: #353E43;
+    color: #F2F0EF;
+    padding: 8px 12px;
+    font-weight: bold;
+    text-align: center;
+    border-bottom: 1px solid #63A1C2;
+    font-size: 1rem;
+    line-height: 1.2;
+}
+
+.pl2-time {
+    background-color: #353E43;
+    color: #F2F0EF;
+    padding: 12px 16px;
+    text-align: center;
+    font-size: 1.3rem;
+    font-weight: bold;
+}
+
+.game-menu-wrapper {
+    background-color: #353E43;
+    border: 2px solid #F2F0EF;
+    border-radius: 6px;
+    padding: 16px 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    width: 100%;
+}
+
+.game-menu-wrapper:hover {
+    background-color: #C2A669;
+    border-color: #C2A669;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(194, 166, 105, 0.4);
+}
+
+.game-menu-label {
+    color: #F2F0EF;
+    font-size: 1rem;
+    font-weight: bold;
+    margin: 0;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.game-menu-wrapper:hover .game-menu-label {
+    color: #353E43;
+}
+
+/* ===== CHESS BOARD ===== */
+.board-wrapper {
+    width: auto;
+    height: auto;
+    display: grid;
+    gap: calc(var(--gap) / 2);
+    grid-template-columns: calc(var(--square-size) * 0.8) repeat(8, var(--square-size)) calc(var(--square-size) * 0.8);
+    grid-template-rows: calc(var(--square-size) * 0.8) repeat(8, var(--square-size)) calc(var(--square-size) * 0.8);
+    padding: var(--gap);
+    background: var(--boardBackground);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    margin: 0 auto;
+    flex-shrink: 0;
+}
+
+.top-labels {
+    grid-column: 2 / 10;
+    grid-row: 1 / 2;
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+}
+
+.bottom-labels {
+    grid-column: 2 / 10;
+    grid-row: 10 / 11;
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+}
+
+.left-labels {
+    grid-column: 1 / 2;
+    grid-row: 2 / 10;
+    display: grid;
+    grid-template-rows: repeat(8, 1fr);
+}
+
+.right-labels {
+    grid-column: 10 / 11;
+    grid-row: 2 / 10;
+    display: grid;
+    grid-template-rows: repeat(8, 1fr);
+}
+
+.file, .rank {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: var(--label-size);
+    color: var(--label-color);
+    user-select: none;
+    opacity: 0.85;
+    font-weight: 600;
+}
+
+.board {
+    grid-column: 2 / 10;
+    grid-row: 2 / 10;
+    display: grid;
+    width: fit-content;
+    height:fit-content;
+    grid-template-columns: repeat(8, var(--square-size));
+    grid-template-rows: repeat(8, var(--square-size));
+    border: var(--border) solid #333;
+    border-radius: calc(var(--radius) * 0.75);
+    overflow: hidden;
+    gap: 0;
+}
+
+.grid-square {
+    width: var(--square-size);
+    height: var(--square-size);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: clamp(0.6rem, 1.5vw, 0.9rem);
+    line-height: 1;
+    user-select: none;
+    transition: transform 120ms ease;
+    position: relative;
+    box-sizing: border-box;
+}
+
+.grid-square:hover {
+    transform: scale(1.02);
+}
+
+.grid-square.light { background: var(--light); }
+.grid-square.dark { background: var(--dark); }
+
+.grid-square.color-blue { background: var(--blue) !important; color: #fff; }
+.grid-square.color-green { background: var(--green) !important; color: #0b2; }
+.grid-square.color-red { background: var(--red) !important; color: #fff; }
+.grid-square.color-gold { background: var(--gold) !important; color: #222; }
+
+.grid-square > .coord {
+    position: absolute;
+    bottom: 2px;
+    left: 2px;
+    font-size: clamp(0.5rem, 1vw, 0.7rem);
+    opacity: 0.55;
+}
+
+/* ===== TABLET STYLES ===== */
+@media (max-width: 1024px) {
+    :root {
+        --board-size: min(85vw, 85vh, 500px);
+    }
+    
+    .game-main {
+        padding: 0.5rem;
+    }
+    
+    .peripherals-wrapper {
+        padding: 15px;
+    }
+}
+
+/* ===== MOBILE STYLES ===== */
+@media (max-width: 768px) {
+    :root {
+        --board-size: min(95vw, 70vh, 400px);
+        --gap: 0.3rem;
+    }
+    
+    .game-main {
+        padding: 0.5rem;
+        min-height: 100vh;
+    }
+    
+    .game-container {
+        gap: 0.5rem;
+    }
+    
+    .peripherals-layer-2 {
+        flex-direction: column;
+        align-items: center;
+        gap: 12px;
+    }
+    
+    .pl2-section {
+        max-width: 280px;
+        width: 100%;
+    }
+    
+    .peripherals-wrapper {
+        padding: 12px;
+    }
+    
+    .pieces-captured {
+        min-height: 40px;
+    }
+    
+    .move-container {
+        min-height: 150px;
+    }
+}
+
+/* ===== SMALL MOBILE STYLES ===== */
+@media (max-width: 480px) {
+    :root {
+        --board-size: min(98vw, 65vh, 350px);
+        --gap: 0.25rem;
+    }
+    
+    .game-main {
+        padding: 0.25rem;
+    }
+    
+    .peripherals-wrapper {
+        padding: 10px;
+    }
+    
+    .pieces-captured {
+        min-height: 30px;
+        padding: 0.25rem;
+    }
+    
+    .move-container {
+        min-height: 120px;
+        padding: 0.5rem;
+    }
+}
+
+/* ===== LANDSCAPE MOBILE ADJUSTMENTS ===== */
+@media (max-height: 600px) and (orientation: landscape) {
+    :root {
+        --board-size: min(60vw, 85vh, 400px);
+    }
+    
+    .game-main {
+        flex-direction: row;
+        align-items: flex-start;
+        gap: 1rem;
+        padding: 0.5rem;
+    }
+    
+    .game-peripherals-container {
+        width: 280px;
+        margin-bottom: 0;
+        flex-shrink: 0;
+    }
+    
+    .game-container {
+        flex: 1;
+        max-width: none;
+    }
+    
+    .peripherals-layer-2 {
+        flex-direction: column;
+        gap: 8px;
+    }
+    
+    .pl2-section {
+        max-width: none;
+    }
+    
+    .peripherals-wrapper {
+        padding: 8px;
+    }
+}

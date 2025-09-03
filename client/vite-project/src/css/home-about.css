@@ -73,7 +73,6 @@
     margin-bottom: 1rem;
 }
 
-/* First Content Section - Light */
 .content-section-light {
     background-color: #EAE0C8;
     color: #2c2c2c;
@@ -88,7 +87,6 @@
     color: #5A4A3A;
 }
 
-/* Second Content Section - Medium */
 .content-section-medium {
     background-color: #B9D9EB;
     color: #2c2c2c;
@@ -103,12 +101,10 @@
     color: #4A3F2A;
 }
 
-/* Reverse layout for second section */
 .reverse {
     flex-direction: row-reverse;
 }
 
-/* Responsive Design */
 @media (max-width: 968px) {
     .home-about{
         width:100%;

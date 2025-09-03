@@ -1,0 +1,44 @@
+.pieces-captured {
+    display: flex;
+    flex-direction: column;
+    padding: 0.5rem;
+    background-color: #436A6B;
+    border: 1px solid #353E43;
+    border-radius: 6px;
+    gap: 0.5rem;
+}
+
+.name-container {
+    text-align: left;
+    padding: 0.25rem 0.5rem;
+}
+
+.header3-type-1 {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #f2f2f2;
+}
+
+.piece-image-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    padding: 0.25rem 0.5rem;
+}
+
+.piece-image-wrapper {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #F2F0EF;
+    border-radius: 4px;
+}
+
+.piece-image-wrapper img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}

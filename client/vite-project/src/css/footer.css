@@ -14,7 +14,6 @@
     align-items: flex-start;
 }
 
-/* Image Section */
 .footer-image-section {
     flex: 1;
 }
@@ -33,7 +32,6 @@
     object-fit: cover;
 }
 
-/* Links Section */
 .footer-links-section {
     flex: 1;
 }
@@ -82,16 +80,6 @@
 .footer-link-item:hover {
     border-color: #2A7A8A;
     box-shadow: 0 2px 8px rgba(26, 90, 106, 0.3);
-}
-
-/* Copyright Section */
-.footer-bottom {
-    margin-top: 2rem;
-    padding-top: 1rem;
-    border-top: 1px solid #1A5A6A;
-    text-align: center;
-    color: #8BB8C8;
-    font-size: 0.9rem;
 }
 
 /* Responsive Design */

@@ -23,7 +23,7 @@
 }
 
 .button-type2 {
-  background: linear-gradient(135deg, #3b82f6, #2563eb); /* blue gradient */
+  background: linear-gradient(135deg, #3b82f6, #2563eb); 
   color: #fff;
   font-size: 1.2rem;
   font-weight: 600;

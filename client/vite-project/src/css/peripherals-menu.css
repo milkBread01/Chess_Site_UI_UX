@@ -1,0 +1,176 @@
+/* Update your game-main to vertical layout */
+.game-main {
+    height: 100vh;
+    display: flex;
+    flex-direction: column; /* Changed to vertical */
+    align-items: center;
+    padding: 2rem 0;
+    overflow-y: auto; /* Allow scrolling if content is tall */
+}
+
+/* Update peripherals container */
+.game-peripherals-container {
+    width: 100%;
+    max-width: 800px; /* Constrain width */
+    height: fit-content;
+    margin: 0 auto 2rem auto; /* Remove top margin, add bottom margin */
+    padding: 1rem;
+    background-color: #353E43;
+}
+
+/* Add container for the chess board */
+.chess-board-container {
+    width: 100%;
+    height: auto;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Ensure board wrapper is centered */
+.board-wrapper {
+    margin: 0 auto; /* Center the board */
+    width:100%;
+}
+
+.peripherals-wrapper {
+    width: 80%;
+    margin:auto;
+    background-color: #63A1C2;
+    border-radius: 8px;
+    padding: 30px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    
+}
+
+/* Layer 1 - Top Timer */
+.peripherals-layer-1 {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 30px;
+}
+
+.game-total-time-container {
+    background-color: #353E43;
+    padding: 12px 24px;
+    border-radius: 6px;
+    border: 2px solid #F2F0EF;
+}
+
+.game-total-time-text {
+    color: #F2F0EF;
+    font-size: 1.4rem;
+    font-weight: bold;
+    margin: 0;
+    text-align: center;
+    
+}
+
+/* Layer 2 - Player sections and menu */
+.peripherals-layer-2 {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 20px;
+}
+
+.pl2-section {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+}
+
+/* Player sections styling */
+.pl2-section:first-child,
+.pl2-section:last-child {
+    max-width: 200px;
+}
+
+.pl2-row {
+    background-color: #353E43;
+    border: 2px solid #F2F0EF;
+    border-radius: 6px;
+    padding: 0;
+    overflow: hidden;
+    width: 100%;
+}
+
+.pl2-username {
+    background-color: #353E43;
+    color: #F2F0EF;
+    padding: 12px 16px;
+    font-weight: bold;
+    text-align: center;
+    border-bottom: 1px solid #63A1C2;
+    font-size: 1.2rem;
+}
+
+.pl2-time {
+    background-color: #353E43;
+    color: #F2F0EF;
+    padding: 12px 16px;
+    text-align: center;
+
+    font-size: 1.3rem;
+    font-weight: bold;
+}
+
+/* Menu section styling */
+.pl2-section:nth-child(2) {
+    max-width: 150px;
+}
+
+.game-menu-wrapper {
+    background-color: #353E43;
+    border: 2px solid #F2F0EF;
+    border-radius: 6px;
+    padding: 20px 24px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    width: 100%;
+}
+
+.game-menu-wrapper:hover {
+    background-color: #C2A669;
+    border-color: #C2A669;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(194, 166, 105, 0.4);
+}
+
+.game-menu-wrapper:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 6px rgba(194, 166, 105, 0.4);
+}
+
+.game-menu-label {
+    color: #F2F0EF;
+    font-size: 1.1rem;
+    font-weight: bold;
+    margin: 0;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.game-menu-wrapper:hover .game-menu-label {
+    color: #353E43;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .peripherals-layer-2 {
+        flex-direction: column;
+        align-items: center;
+        gap: 15px;
+    }
+    
+    .pl2-section {
+        max-width: 250px;
+        width: 100%;
+    }
+    
+    .peripherals-wrapper {
+        padding: 20px;
+    }
+}

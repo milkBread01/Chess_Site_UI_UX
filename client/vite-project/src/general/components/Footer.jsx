@@ -1,5 +1,3 @@
-import { useState } from "react";
-import { NavLink } from "react-router-dom";
 export default function Footer() {
     return (
         <footer className = "footer">
@@ -29,10 +27,6 @@ export default function Footer() {
                         </li>
                     </ul>
                 </div>
-            </div>
-
-            <div className = "footer-bottom">
-                <p>&copy; 2025 Chess Learning Site. All rights reserved.</p>
             </div>
         </footer>
     );

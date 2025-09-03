@@ -2,7 +2,6 @@ export default function AccountInfo() {
     return (
         <main className="account-main">
 
-            {/* ===== Account Info ===== */}
             <section className="account-info">
                 <div className="info-header-container section-header" role="heading" aria-level={2}>
                     <span>Account Info</span>
@@ -28,7 +27,6 @@ export default function AccountInfo() {
                 </div>
             </section>
 
-            {/* ===== Scores ===== */}
             <section className="scores-container">
                 <div className="scores-header-container section-header alt" role="heading" aria-level={2}>
                     <span>Scores</span>
@@ -50,11 +48,24 @@ export default function AccountInfo() {
                             </thead>
 
                             <tbody>
-                                {/* Example empty rows to match the wire diagram layout */}
-                                <tr><td colSpan="7">&nbsp;</td></tr>
-                                <tr><td colSpan="7">&nbsp;</td></tr>
-                                <tr><td colSpan="7">&nbsp;</td></tr>
-                                <tr><td colSpan="7">&nbsp;</td></tr>
+                                <tr>
+                                    <td>23</td>
+                                    <td>15</td>
+                                    <td>5</td>
+                                    <td>3</td>
+                                    <td>0.65</td>
+                                    <td>5:16</td>
+                                    <td>18</td>
+                                </tr>
+                                <tr>
+                                    <td>23</td>
+                                    <td>15</td>
+                                    <td>5</td>
+                                    <td>3</td>
+                                    <td>0.65</td>
+                                    <td>5:16</td>
+                                    <td>18</td>
+                                </tr>
                             </tbody>
                         </table>
                     </div>
