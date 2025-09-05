@@ -1,15 +1,24 @@
 import PlayerTime from "./PlayerTime";
+import { useState, useEffect } from "react";
+import TotalTime from './TotalTime';
 
-export default function GamePeripheralsMenu({player1Info, player1Time, player2Info, player2Time}) {
+export default function GamePeripheralsMenu({
+    player1Info, 
+    player2Info, 
+    gameTimeRunning,/* boolean is clock on */  
+    onToggleMenu, 
+    activePlayer, /* active player 1 or 2*/
+    playerTimeRunning
+}) {
 
     return(
         <>
             <div className = "peripherals-wrapper">
                 <div className = "peripherals-layer-1">    
                     <div className = "game-total-time-container">
-                        <h2 className = "game-total-time-text">
-                            00:00
-                        </h2>
+                        <TotalTime
+                            gameTimeRunning={gameTimeRunning}
+                        />
                     </div>
                 </div>
 
@@ -18,22 +27,31 @@ export default function GamePeripheralsMenu({player1Info, player1Time, player2In
                     <div className = "pl2-section">
                         <PlayerTime
                             playerInfo = {player1Info}
-                            time = {player1Time}
+                            playerTimeRunning={playerTimeRunning}
+                            activePlayer = {activePlayer}
+                            id = "1"
                         />
                     </div>
 
                     <div className = "pl2-section">
-                        <div className = "game-menu-wrapper">
-                            <h2 className = "game-menu-label">
+                        <div className = "game-menu-wrapper"
+                            onClick = {onToggleMenu}
+                        >
+                            <h2 
+                                className = "game-menu-label">
                                 Menu
                             </h2> 
                         </div>
+                        
+
                     </div>
 
                     <div className = "pl2-section">
                         <PlayerTime
                             playerInfo = {player2Info}
-                            time = {player2Time}
+                            playerTimeRunning={playerTimeRunning}
+                            activePlayer = {activePlayer}
+                            id = "2"
                         />
                     </div>
                 </div>

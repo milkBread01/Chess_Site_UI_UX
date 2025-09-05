@@ -2,8 +2,7 @@ import { Outlet } from "react-router-dom";
 import Header from "./header";
 import Footer from "./footer";
 
-/* import '../../css/peripherals-menu.css';
- */
+import '../../css/peripherals-menu.css';
 import '../../css/general.css';
 import '../../css/header.css';
 import '../../css/home-hero.css';
@@ -17,6 +16,9 @@ import '../../css/PlayDash.css';
 import '../../css/account.css';
 import '../../css/GamePage.css';
 import '../../css/Board.css';
+import '../../css/captured-pieces.css';
+import '../../css/pop-up.css';
+
 export default function Layout() {
   return (
     <>

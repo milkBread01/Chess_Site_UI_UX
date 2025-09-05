@@ -1,7 +1,8 @@
 import { useEffect } from 'react';
+import TopBoardLabels from './TopBoardLabels';
+import BottomBoardLabels from './BottomBoardLabels';
 
-export default function Board() {
-    const filePath = "../assets/";
+export default function Board({ pieces, onSquareClick, selectedSquare, highlights }) {
     const files = ["a","b","c","d","e","f","g","h"];
     const ranks = [8,7,6,5,4,3,2,1];
 
@@ -9,59 +10,44 @@ export default function Board() {
         <>
             <div className = "chess-board-container">
                 <div className="board-wrapper">
-                    <div className="top-labels">
-                        {files.map((file, index) => (
-                            <div
-                                key={`top-label-${index}`}
-                                className="file">
-                                    {file}
-                            </div>
-                        ))}
-                    </div>
-
-                    <div className="left-labels">
-                        {ranks.map((rank, index) => (
-                            <div
-                                key={`left-label-${index}`}
-                                className="rank">
-                                    {rank}
-                            </div>
-                        ))}
-                    </div>
+                    <TopBoardLabels />
 
                     <div className="board">
                         {ranks.map((rank, i) =>
-                            files.map((file, j) => (
-                                <div
-                                    key={`${rank}-${file}`}
-                                    className={`grid-square ${(i + j) % 2 === 1 ? "light" : "dark"}`}
-                                    data-square={`${file}${rank}`}
-                                >
-                                    <span className="coord">{file}{rank}</span>
-                                </div>
-                            ))
+                            files.map((file, j) => {
+                                const currentSquare = `${file}${rank}`;
+                                const currentPiece = pieces?.[currentSquare];
+                                const defaultColor = (i+j) % 2 === 1 ? "light" : "dark";
+
+                                const highlightColor = highlights[currentSquare];
+                                const colorClass = highlightColor ? `color-${highlightColor}` : defaultColor;
+
+                                const isSelected = selectedSquare === currentSquare ? "is-selected" : "";
+
+                                return(
+                                    <div
+                                        key = {currentSquare}
+                                        className = {`grid-square ${colorClass} ${isSelected}`}
+                                        data-square = {currentSquare}
+                                        onClick = {() => onSquareClick?.(currentSquare)}
+                                    >
+                                        
+                                        {currentPiece && (
+                                            <img
+                                                src = {currentPiece.img}
+                                                alt = {currentPiece.type}
+                                            />
+                                        )}
+                                        <span className = "coord">
+                                            {currentSquare}
+                                        </span>
+                                    </div>
+                                );
+                            })
                         )}
                     </div>
                     
-                    <div className="right-labels">
-                        {ranks.map((rank, index) => (
-                            <div
-                                key={`right-label-${index}`}
-                                className="rank">
-                                    {rank}
-                            </div>
-                        ))}
-                    </div>
-                    
-                    <div className="bottom-labels">
-                        {files.map((file, index) => (
-                            <div
-                                key={`bottom-label-${index}`}
-                                className="file">
-                                    {file}
-                            </div>
-                        ))}
-                    </div>
+                    <BottomBoardLabels />
                 </div>    
             </div>
             
