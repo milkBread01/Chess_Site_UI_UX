@@ -1,0 +1,320 @@
+
+/* 
+    IN :  "d4"
+    OUT:  4 3
+*/
+export function stringToNumeric(stringNotation) {
+    if (stringNotation.length !== 2) {
+        console.error("Invalid notation:", stringNotation);
+        return null;
+    }
+
+    const file = stringNotation[0].toLowerCase();
+    const rank = parseInt(stringNotation[1], 10);
+
+    if (file < "a" || file > "h" || rank < 1 || rank > 8) {
+        console.error("Out of range:", stringNotation);
+        return null;
+    }
+
+    const row = 8 - rank;
+    const col = file.charCodeAt(0) - "a".charCodeAt(0);
+
+    return [row, col];
+}
+
+/* 
+    IN :  4 3
+    OUT:  "d4"
+*/
+export function numericToString([row, col]) {
+    if (row < 0 || row > 7 || col < 0 || col > 7) {
+        console.error("Invalid indices:", [row, col]);
+        return "";
+    }
+
+    const file = String.fromCharCode("a".charCodeAt(0) + col);
+    const rank = 8 - row;
+
+    return `${file}${rank}`;
+}
+
+/* 
+    IN :  "43"
+    OUT:  "d4"
+*/
+export function numericStringToString(numericString){
+
+    const row = Number(numericString[0])
+    const col = Number(numericString[1])
+
+    const file = String.fromCharCode("a".charCodeAt(0) + col);
+    const rank = 8 - row;
+
+    return `${file}${rank}`;
+
+}
+
+
+function getTheoreticalMoves(){
+    let theoreticalMoveList = {};
+    const origin = "d3"
+    const [row,col] = stringToNumeric(origin);
+    
+    let currentRow = row;
+    let currentCol = col;
+
+    let moveList=[
+        [-2, -1], // up left
+        [-2, +1], // up right
+        [-1, +2], // right up
+        [+1, +2], // right down
+        [+2, +1], // down right
+        [+2, -1], // down left
+        [+1, -2], // left down
+        [-1, -2] // left up
+    ];
+
+    for(let m=0; m<moveList.length; m++){
+        currentRow = row;
+        currentCol = col;
+        let directionMoves = [];
+        currentRow += moveList[m][0];
+        currentCol += moveList[m][1];
+        if(
+            currentRow < 0 || currentRow >= 8 ||
+            currentCol < 0 || currentCol >= 8
+        ) continue;
+        directionMoves.push(numericStringToString(`${currentRow}${currentCol}`));
+        theoreticalMoveList[`d${m}`] = directionMoves;
+    }
+    console.log(theoreticalMoveList)
+    return theoreticalMoveList
+}
+
+
+function filterNonRayBuckets(theoreticalMoves, LUT, originColor) {
+    console.log("FILTER NON RAY BUCKETS")
+    let valid = [];
+
+    for (const dirKey in theoreticalMoves) {
+        const candidates = theoreticalMoves[dirKey];
+        for (const sq of candidates) {
+            const occ = LUT[sq]; 
+            if(!occ){
+                //empty
+                valid.push(sq)
+                continue;
+            }
+            if(occ.color !== originColor){
+                valid.push(sq)
+            }
+            break;
+        }
+    }
+    return valid;
+}
+
+function main(){
+    const originColor = "white"
+    const theoMoves = getTheoreticalMoves()
+    const LUT = {
+        "a2": {
+            "id": "wp-1",
+            "type": "pawn",
+            "color": "white",
+            "img": "/chess/assets/white-pawn.png"
+        },
+        "a7": {
+            "id": "bp-2",
+            "type": "pawn",
+            "color": "black",
+            "img": "/chess/assets/black-pawn.png"
+        },
+        "a1": {
+            "id": "wr-3",
+            "type": "rook",
+            "color": "white",
+            "img": "/chess/assets/white-rook.png"
+        },
+        "a8": {
+            "id": "br-4",
+            "type": "rook",
+            "color": "black",
+            "img": "/chess/assets/black-rook.png"
+        },
+        "b2": {
+            "id": "wp-5",
+            "type": "pawn",
+            "color": "white",
+            "img": "/chess/assets/white-pawn.png"
+        },
+        "b7": {
+            "id": "bp-6",
+            "type": "pawn",
+            "color": "black",
+            "img": "/chess/assets/black-pawn.png"
+        },
+        "b1": {
+            "id": "wk-7",
+            "type": "knight",
+            "color": "white",
+            "img": "/chess/assets/white-knight.png"
+        },
+        "b8": {
+            "id": "bk-8",
+            "type": "knight",
+            "color": "black",
+            "img": "/chess/assets/black-knight.png"
+        },
+        "c2": {
+            "id": "wp-9",
+            "type": "pawn",
+            "color": "white",
+            "img": "/chess/assets/white-pawn.png"
+        },
+        "c7": {
+            "id": "bp-10",
+            "type": "pawn",
+            "color": "black",
+            "img": "/chess/assets/black-pawn.png"
+        },
+        "c1": {
+            "id": "wb-11",
+            "type": "bishop",
+            "color": "white",
+            "img": "/chess/assets/white-bishop.png"
+        },
+        "c8": {
+            "id": "bb-12",
+            "type": "bishop",
+            "color": "black",
+            "img": "/chess/assets/black-bishop.png"
+        },
+        "d2": {
+            "id": "wp-13",
+            "type": "pawn",
+            "color": "white",
+            "img": "/chess/assets/white-pawn.png"
+        },
+        "d7": {
+            "id": "bp-14",
+            "type": "pawn",
+            "color": "black",
+            "img": "/chess/assets/black-pawn.png"
+        },
+        "d1": {
+            "id": "wq-15",
+            "type": "queen",
+            "color": "white",
+            "img": "/chess/assets/white-queen.png"
+        },
+        "d8": {
+            "id": "bq-16",
+            "type": "queen",
+            "color": "black",
+            "img": "/chess/assets/black-queen.png"
+        },
+        "e2": {
+            "id": "wp-17",
+            "type": "pawn",
+            "color": "white",
+            "img": "/chess/assets/white-pawn.png"
+        },
+        "e7": {
+            "id": "bp-18",
+            "type": "pawn",
+            "color": "black",
+            "img": "/chess/assets/black-pawn.png"
+        },
+        "e1": {
+            "id": "wk-19",
+            "type": "king",
+            "color": "white",
+            "img": "/chess/assets/white-king.png"
+        },
+        "e8": {
+            "id": "bk-20",
+            "type": "king",
+            "color": "black",
+            "img": "/chess/assets/black-king.png"
+        },
+        "f2": {
+            "id": "wp-21",
+            "type": "pawn",
+            "color": "white",
+            "img": "/chess/assets/white-pawn.png"
+        },
+        "f7": {
+            "id": "bp-22",
+            "type": "pawn",
+            "color": "black",
+            "img": "/chess/assets/black-pawn.png"
+        },
+        "f1": {
+            "id": "wb-23",
+            "type": "bishop",
+            "color": "white",
+            "img": "/chess/assets/white-bishop.png"
+        },
+        "f8": {
+            "id": "bb-24",
+            "type": "bishop",
+            "color": "black",
+            "img": "/chess/assets/black-bishop.png"
+        },
+        "g2": {
+            "id": "wp-25",
+            "type": "pawn",
+            "color": "white",
+            "img": "/chess/assets/white-pawn.png"
+        },
+        "g7": {
+            "id": "bp-26",
+            "type": "pawn",
+            "color": "black",
+            "img": "/chess/assets/black-pawn.png"
+        },
+        "g1": {
+            "id": "wk-27",
+            "type": "knight",
+            "color": "white",
+            "img": "/chess/assets/white-knight.png"
+        },
+        "g8": {
+            "id": "bk-28",
+            "type": "knight",
+            "color": "black",
+            "img": "/chess/assets/black-knight.png"
+        },
+        "h2": {
+            "id": "wp-29",
+            "type": "pawn",
+            "color": "white",
+            "img": "/chess/assets/white-pawn.png"
+        },
+        "h7": {
+            "id": "bp-30",
+            "type": "pawn",
+            "color": "black",
+            "img": "/chess/assets/black-pawn.png"
+        },
+        "h1": {
+            "id": "wr-31",
+            "type": "rook",
+            "color": "white",
+            "img": "/chess/assets/white-rook.png"
+        },
+        "h8": {
+            "id": "br-32",
+            "type": "rook",
+            "color": "black",
+            "img": "/chess/assets/black-rook.png"
+        }
+    }
+    const valid = filterNonRayBuckets(theoMoves, LUT, originColor)
+    console.log("VALID MOVES \n")
+    console.log(valid)
+}
+
+main()

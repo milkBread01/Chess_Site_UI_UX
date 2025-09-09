@@ -8,7 +8,8 @@ export default function GamePeripheralsMenu({
     gameTimeRunning,/* boolean is clock on */  
     onToggleMenu, 
     activePlayer, /* active player 1 or 2*/
-    playerTimeRunning
+    playerTimeRunning,
+    advanceTurn
 }) {
 
     return(
@@ -29,7 +30,8 @@ export default function GamePeripheralsMenu({
                             playerInfo = {player1Info}
                             playerTimeRunning={playerTimeRunning}
                             activePlayer = {activePlayer}
-                            id = "1"
+                            id = "white"
+                            advanceTurn={advanceTurn}
                         />
                     </div>
 
@@ -42,8 +44,6 @@ export default function GamePeripheralsMenu({
                                 Menu
                             </h2> 
                         </div>
-                        
-
                     </div>
 
                     <div className = "pl2-section">
@@ -51,7 +51,7 @@ export default function GamePeripheralsMenu({
                             playerInfo = {player2Info}
                             playerTimeRunning={playerTimeRunning}
                             activePlayer = {activePlayer}
-                            id = "2"
+                            id = "black"
                         />
                     </div>
                 </div>

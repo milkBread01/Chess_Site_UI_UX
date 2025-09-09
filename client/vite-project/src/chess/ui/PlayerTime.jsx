@@ -1,75 +1,66 @@
 import { useState, useEffect, useRef } from "react";
 
-export default function PlayerTime({ playerInfo, playerTimeRunning, activePlayer, id}) {
+export default function PlayerTime({
+    playerInfo,
+    playerTimeRunning,
+    activePlayer,
+    id,
+    advanceTurn,
+}) {
     const [playerTime, setPlayerTime] = useState(120);
-    const [prevPlayer, setPrevPlayer] = useState("1");
-    const interval = useRef(null);
-    if(prevPlayer != activePlayer){
-        setPrevPlayer((p) => p === "1" ? "2":"1");
-        setPlayerTime(120);
-    }
+    const intervalRef = useRef(null);
+    const isRunning = playerTimeRunning && activePlayer === id;
 
+    // Reset timer to default when turn changes
     useEffect(() => {
-        if(playerTimeRunning){
-            interval.current = setInterval(() => {
-                setPlayerTime((prev)=> prev-1)
-            },1000)
-        }else {
-            clearInterval(interval.current);
-            interval.current=null;
+        // Reset this player's time when it becomes their turn
+        if (activePlayer === id) {
+            setPlayerTime(120);
         }
+    }, [activePlayer, id]);
+
+    // start/stop the ticking interval based on isRunning
+    useEffect(() => {
+        if (intervalRef.current) {
+            clearInterval(intervalRef.current);
+            intervalRef.current = null;
+        }
+
+        if (!isRunning) return;
+
+        intervalRef.current = setInterval(() => {
+        setPlayerTime((prev) => {
+            if (prev <= 1) {
+                clearInterval(intervalRef.current);
+                intervalRef.current = null;
+                setTimeout(() => {
+                advanceTurn();
+                }, 0);
+                return 0;
+            }
+            return prev - 1;
+        });
+        }, 1000);
+
         return () => {
-            clearInterval(interval.current);
-            interval.current = null;
-        }
-        
-    })
+            if (intervalRef.current) {
+                clearInterval(intervalRef.current);
+                intervalRef.current = null;
+            }
+        };
+    }, [isRunning, advanceTurn]);
 
-    let formattedTime = "";
-    let minutes = Math.floor(playerTime / 60);
-    let seconds = playerTime % 60;
-    formattedTime = `${String(minutes).padStart(2,"0")}:${String(seconds).padStart(2,"0")}`;
+    const minutes = String(Math.floor(playerTime / 60)).padStart(2, "0");
+    const seconds = String(playerTime % 60).padStart(2, "0");
 
-    if(activePlayer === id){
-        return(
-            <>
-                <div className = {`pl2-row`}>
-                    <div className = "pl2-username">
-                        {playerInfo.playerName} : {playerInfo.playerColor}
-                    </div>
-
-                    <div className = "pl2-time">
-                        {formattedTime}
-                    </div>
-                </div>
-            </>
-        )
-    }else{
-        return(
-            <>
-                <div className = {`pl2-row`}>
-                    <div className = "pl2-username">
-                        {playerInfo.playerName} : {playerInfo.playerColor}
-                    </div>
-
-                    <div className = "pl2-time">
-                        02:00
-                    </div>
-                </div>
-            </>
-        )
-    }
+    return (
+        <div className="pl2-row">
+            <div className="pl2-username">
+                {playerInfo.playerName} : {playerInfo.playerColor}
+            </div>
+            <div className="pl2-time">
+                {minutes}:{seconds}
+            </div>
+        </div>
+    );
 }
-
-    /* 
-    
-    if id == 1 AND player == 1 AND playerTimeRunning == true display changing clock
-    if id == 1 AND player == 2 AND playerTimeRunning == true display max time static "02:00"
-
-    if id == 2 AND player == 2 AND playerTimeRunning == true display changing clock
-    if id == 2 AND player == 1 AND playerTimeRunning == true display max time static "02:00"
-
-    if playerTimeRunning == false stop any clock
-
-    if (id != player )
-    */

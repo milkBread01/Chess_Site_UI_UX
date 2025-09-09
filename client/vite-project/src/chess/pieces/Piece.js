@@ -1,4 +1,7 @@
-import Attack from "./Attack"
+/* 
+class Piece {
+    constructor(id, )
+} *///import Attack from "./Attack"
 
 function moveTheoretical() {
 
@@ -16,7 +19,7 @@ function determineGold() {
 
 }
 
-export default function Queen({origin, LUT}) {
+export function Piece({origin, LUT}) {
     
     
 }

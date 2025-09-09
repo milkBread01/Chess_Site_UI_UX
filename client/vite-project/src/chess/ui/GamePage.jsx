@@ -1,4 +1,4 @@
-import { useState, useEffect  } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from "react-router-dom";
 
 import GamePeripheralsMenu from "./GamePeripheralsMenu";
@@ -9,6 +9,12 @@ import BeginGameButton from "./BeginGameButton";
 import MoveHistory from './MoveHistory';
 import GameMenu from './GameMenu';
 
+import { getPawnMoves } from "../pieces/Pawn";
+import { getBishopMoves } from "../pieces/Bishop";
+import { getRookMoves } from "../pieces/Rook";
+import { getQueenMoves } from "../pieces/Queen";
+import { getKnightMoves } from "../pieces/Knight";
+import { getKingMoves } from "../pieces/King";
 
 
 let uid = 0;
@@ -28,6 +34,7 @@ function makePiece(color, type) {
 
 function handleInitPos() {
     const files = ["a","b","c","d","e","f","g","h"];
+    /* pieces in order */
     const pieceOrder = ["rook","knight","bishop","queen","king","bishop","knight","rook"];
     const pos = {};
 
@@ -38,7 +45,9 @@ function handleInitPos() {
         pos[`${file}1`] = makePiece("white", pieceOrder[index]);
         pos[`${file}8`] = makePiece("black", pieceOrder[index]);
     })
+    console.log(`=====================================================`)
     console.log(pos)
+    console.log(`=====================================================`)
     return pos;
 
 }
@@ -57,12 +66,13 @@ export default function GamePage() {
     const [highlights, setHighlights] = useState({}); /* contains highlights */
     const [moveHistory, setMoveHistory] = useState([]); /* contains move history */
 
-    const[player1Pieces, setPlayer1Pieces] = useState([]);
-    const[player2Pieces, setPlayer2Pieces] = useState([]);
+    const[player1PiecesCaptured, setPlayer1PiecesCaptured] = useState([]);
+    const[player2PiecesCaptured, setPlayer2PiecesCaptured] = useState([]);
     
     const [gameOver, setGameOver] = useState(false);
+    const [isCheck, setIsCheck] = useState(false)
 
-    const [activePlayer, setActivePlayer] = useState("1");/* 1 or 2 */
+    const [activePlayer, setActivePlayer] = useState("white");
 
     const [playerTimeRunning, setPlayerTimeRunning] = useState(false);
     const [gameTimeRunning, setGameTimeRunning] = useState(false);
@@ -98,15 +108,11 @@ export default function GamePage() {
 
     };
 
-    const piecesCapturedByPlayer1 = ["Pawn", "Rook"];
-
     const player2Info = {
         playerName: "Player 2",
         playerColor: "black",
 
     };
-
-    const piecesCapturedByPlayer2 = ["Bishop", "Queen", "Pawn"];
 
     function handleBeginGame() {
         if (chessBoard === null){
@@ -124,33 +130,93 @@ export default function GamePage() {
     }
 
     function makeMove(from, to) {
-        setChessBoard((prev) => {
-            const next = {...prev};
-            const piece  = next[from];
-            
-            const entry = { piece, from, to };
-            setMoveHistory((his) => [
-                ...his, entry
-            ]);
 
-            console.log(
-                `${piece.type[0].toUpperCase() + piece.type.slice(1)} (${piece.id}) FROM ${from} TO ${to}`
-            );
+        let gameStates = {
+            capturedType: null,
+            capturerColor: null,
+            opponentInCheck: false,
+            historyEntry: null,
+        };
 
-            next[to] = next[from];
+        setChessBoard(prev => {
+            const next = { ...prev };
+
+            const moving = next[from];
+            if(!moving) return prev; // if no piece there, ignore
+
+            const target = next[to] || null;
+            const capturerColor = moving.color;
+            const opponent = capturerColor === "white" ? "black" : "white";
+
+            // Capture if destination occupied by opponent
+            if( target && target.color !== capturerColor) {
+                gameStates.capturedType = target.type;   // set captured to piece type and color
+                gameStates.capturerColor = capturerColor;
+            }
+
+            next[to] = { ...moving, location: to, moves: (moving.moves ?? 0) + 1 };
             delete next[from];
+
+            gameStates.historyEntry = {
+                piece: next[to],
+                from,
+                to,
+            };
+
             return next;
-        })
-        endTurn("move")
+        });
+
+        // update gameStates AFTER the board is updated
+        if (gameStates.historyEntry) {
+            setMoveHistory(h => [...h, gameStates.historyEntry]);
+        }
+
+        if (gameStates.capturedType) {
+            // if piece captured append to list
+            const { capturedType, capturerColor } = gameStates;
+            if (capturerColor === "white") {
+                setPlayer1PiecesCaptured(prev => [...prev, capturedType]);
+            } else {
+                setPlayer2PiecesCaptured(prev => [...prev, capturedType]);
+            }
+        }
+
+        setIsCheck(gameStates.opponentInCheck ? (activePlayer === "white" ? "black" : "white") : null);
+
+        // change turn
+        endTurn("move");
+    }
+    function isKingInCheck(board, color) {
+
+    }
+
+    function findKing(board, color) {
+
+    }
+
+    function isPromoted(){
+
+    }
+
+    function showPromotionMenu(){
+
     }
 
     function endTurn(reason){
         advanceTurn()
     }
-    function advanceTurn(){
-        setActivePlayer((p) => p === "1" ? "2":"1")
-        
+
+    function scanBoard(){
+
     }
+
+    function cloneBoard(){
+
+    }
+
+    const advanceTurn = useCallback(() => {
+        setActivePlayer((p) => (p === "white" ? "black" : "white"));
+    }, []);
 
     function timerExpired(){
         endTurn("timout")
@@ -159,19 +225,44 @@ export default function GamePage() {
     function handleSquareClick(square) {
         if (!chessBoard) return; 
 
-        // if nothing selected & there is a piece, select it
+        /* // if nothing selected & there is a piece, select it
         if (!selected && chessBoard[square]) {
-            console.log(selected)
             setSelected(square);
             return;
         }
 
         // if selected → move piece to target (no legality check)
         if (selected) {
-            console.log(selected)
+            console.log(`HSC SELECTED: ${selected}`)
             makeMove(selected, square)
             setSelected(null);
+        } */
+
+        const pieceAtSquare = chessBoard[square];
+
+        // only allow inputs from own pieces
+        if(!selected){
+            if (!pieceAtSquare ) return;
+            if (pieceAtSquare.color !== activePlayer) return
+            setSelected(square)
+            return;
         }
+
+        // toggle square if selected
+        if(square === selected){
+            setSelected(null);
+            setHighlights({});
+            return;
+        }
+
+        if(highlights[(square)]){
+            makeMove(selected,square)
+            setSelected(null);
+            setHighlights({});
+            return
+        }
+        setSelected(null);
+        setHighlights({});
     }
 
     useEffect(()=>{
@@ -180,49 +271,60 @@ export default function GamePage() {
             return
         }
         const piece = chessBoard[selected];
+        console.log(`PIECE: ${piece.type}`)
+        console.log(`FROM: ${selected}`)
         if(!piece){
             setHighlights({})
             return
         }
         const gridTargets = getGridColors(piece,selected,chessBoard);
+        console.log(gridTargets)
 
         setHighlights(gridTargets)
         console.log(gridTargets)
     }, [selected,chessBoard])
 
-    function getGridColors() {
-        let list = {
-            e4: "green",
-            d4: "red",
-            f4: "gold",
-            e5: "blue"
-        };
-
-        return list
+    function getGridColors(piece,origin ,LUT) {
+        
+        switch (piece.type) {
+            case "pawn":
+                return getPawnMoves(origin, LUT, piece.color);
+            case "bishop":
+                return getBishopMoves(origin, LUT, piece.color);
+            case "rook":
+                return getRookMoves(origin, LUT, piece.color);
+            case "queen":
+                return getQueenMoves(origin, LUT, piece.color);
+            case "knight":
+                return getKnightMoves(origin, LUT, piece.color);
+            case "king":
+                return getKingMoves(origin, LUT, piece.color);
+            default:
+                return {};
+        }
     }
     
-
     return(
         <>
             <main className = "game-main">
                 <section className = "game-peripherals-container">
                     <GamePeripheralsMenu 
-                        
-                            player1Info = {player1Info}
-                            player2Info = {player2Info}
-                            gameTimeRunning = {gameTimeRunning}
-                            onToggleMenu = {handleToggleGameTime}
-                            activePlayer={activePlayer}
-                            playerTimeRunning={playerTimeRunning}
-
+                        player1Info = {player1Info}
+                        player2Info = {player2Info}
+                        gameTimeRunning = {gameTimeRunning}
+                        onToggleMenu = {handleToggleGameTime}
+                        activePlayer={activePlayer}
+                        playerTimeRunning={playerTimeRunning}
+                        advanceTurn = {advanceTurn}
                     />
+
                 </section>
 
                 <section className = "game-container">
                     <div className = "board-container">
                         <CapturedPieces
                             playerInfo = {player1Info}
-                            capturedPieces = {piecesCapturedByPlayer1}
+                            capturedPieces = {player1PiecesCaptured}
                         />
 
                         <Board 
@@ -235,7 +337,7 @@ export default function GamePage() {
 
                         <CapturedPieces
                             playerInfo = {player2Info}
-                            capturedPieces = {piecesCapturedByPlayer2}
+                            capturedPieces = {player2PiecesCaptured}
                         />
                     </div>
 
