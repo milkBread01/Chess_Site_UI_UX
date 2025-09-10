@@ -55,37 +55,65 @@ export function numericStringToString(numericString){
 
 }
 
+/* 
+    theoretical Moves are in format of:
+    {
+    d0: [ 'd5', 'd6', 'd7', 'd8' ],
+    d1: [ 'e4', 'f4', 'g4', 'h4' ],
+    d2: [ 'd3', 'd2', 'd1' ],
+    d3: [ 'c4', 'b4', 'a4' ]
+    }
+*/
 /* ensure no piece exists in the move spot */
 export function filterRays(theoreticalMoveList, LUT, originColor) {
 
     let validatedMoveList = [];
+    let enemySquares = [];
     
     for (const dirKey in theoreticalMoveList) {
         const ray = theoreticalMoveList[dirKey];
         for (const sq of ray) {
           const occ = LUT[sq];
         
-          if (!occ) {
-            // empty → keep and continue scanning this direction
+          if(!occ) {
+            // if empty, keep and continue scanning this direction
             validatedMoveList.push(sq);
             continue;
           }
         
-          if (occ.color !== originColor) {
-            // enemy → capture square allowed, then stop scanning this direction
+          if(occ.color !== originColor) {
+            // if enemy, capture square allowed, then stop scanning this direction
             validatedMoveList.push(sq);
+            enemySquares.push(sq);
           }
           // friendly OR enemy both block further squares
           break;
         }
     }
+    /* 
+    for the validated List, make object with value as green unless VML contains matching EQ, if overlap then assign blue
+        h1: "green"
+        h2: "blue"
+    */
+
+    let colorMap = makeB(validatedMoveList, enemySquares); 
 
     return validatedMoveList;
+}
+
+function makeB(validatedMoveList, enemySquares){
+    let colorMap = {}
+
+    for ( const square of validatedMoveList ){
+        colorMap[square] = enemySquares.includes(square) ? "blue" : "green"
+    }
+    return colorMap
 }
 
 export function filterNonRays(theoreticalMoves, LUT, originColor){
     console.log("FILTER NON RAY BUCKETS")
     let valid = [];
+    let enemySquares = [];
 
     for (const dirKey in theoreticalMoves) {
         const candidates = theoreticalMoves[dirKey];
@@ -93,15 +121,19 @@ export function filterNonRays(theoreticalMoves, LUT, originColor){
             const occ = LUT[sq]; 
             if(!occ){
                 //empty
-                valid.push(sq)
+                valid.push(sq);
                 continue;
             }
             if(occ.color !== originColor){
-                valid.push(sq)
+                valid.push(sq);
+                enemySquares.push(sq);
             }
             break;
         }
     }
+
+    let colorMap = makeB(validatedMoveList, enemySquares);
+
     return valid;
 }
 
@@ -150,7 +182,7 @@ export function filterPawn(LUT, originColor, origin){
         return valid
     }
 
-    if(originColor==="white"){
+    if ( originColor==="white"){
         let verticalUp1 = numericStringToString(`${originRC[0]-1}${originRC[1]}`)
 
         if(!LUT[verticalUp1]){

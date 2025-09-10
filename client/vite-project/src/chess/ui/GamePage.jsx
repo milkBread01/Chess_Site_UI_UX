@@ -130,6 +130,10 @@ export default function GamePage() {
     }
 
     function makeMove(from, to) {
+        /* 
+            From: "h2"
+            To:   "h4"
+        */
 
         let gameStates = {
             capturedType: null,
@@ -137,15 +141,17 @@ export default function GamePage() {
             opponentInCheck: false,
             historyEntry: null,
         };
+        console.log(chessBoard)
 
         setChessBoard(prev => {
+              
             const next = { ...prev };
 
-            const moving = next[from];
+            const moving = next[from]; // get from piece info
             if(!moving) return prev; // if no piece there, ignore
 
-            const target = next[to] || null;
-            const capturerColor = moving.color;
+            const target = next[to] || null
+            const capturerColor = moving.color
             const opponent = capturerColor === "white" ? "black" : "white";
 
             // Capture if destination occupied by opponent
@@ -155,6 +161,9 @@ export default function GamePage() {
             }
 
             next[to] = { ...moving, location: to, moves: (moving.moves ?? 0) + 1 };
+
+            console.log("next")
+            console.log(next[to])
             delete next[from];
 
             gameStates.historyEntry = {
@@ -162,16 +171,18 @@ export default function GamePage() {
                 from,
                 to,
             };
+            console.log(gameStates.historyEntry)
 
             return next;
-        });
+        })
 
         // update gameStates AFTER the board is updated
-        if (gameStates.historyEntry) {
+        if(gameStates.historyEntry) {
             setMoveHistory(h => [...h, gameStates.historyEntry]);
+            
         }
 
-        if (gameStates.capturedType) {
+        if(gameStates.capturedType) {
             // if piece captured append to list
             const { capturedType, capturerColor } = gameStates;
             if (capturerColor === "white") {
@@ -214,9 +225,9 @@ export default function GamePage() {
 
     }
 
-    const advanceTurn = useCallback(() => {
+    function advanceTurn(){
         setActivePlayer((p) => (p === "white" ? "black" : "white"));
-    }, []);
+    };
 
     function timerExpired(){
         endTurn("timout")
