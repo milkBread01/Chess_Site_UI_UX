@@ -1,5 +1,5 @@
-//import Attack from "./Attack"
-import { stringToNumeric, numericStringToString, filterRays, makeObj } from "./Utils";
+import { makeRPG } from "./Attack.js"
+import { stringToNumeric, numericStringToString, filterRays, makeObj } from "./Utils.js";
 
 /* 
     Rook
@@ -10,7 +10,7 @@ import { stringToNumeric, numericStringToString, filterRays, makeObj } from "./U
 
 */
 
-function moveTheoretical(origin) {
+export function moveTheoreticalRook(origin) {
     let theoreticalMoves = {};
     const [row,col] = stringToNumeric(origin);
 
@@ -41,30 +41,25 @@ function moveTheoretical(origin) {
         theoreticalMoves[`d${m}`] = directionMoves;
     }
 
-    console.log(theoreticalMoves)
+    //console.log(theoreticalMoves)
     return theoreticalMoves
-}
-
-
-function determinePurple() {
-
-}
-
-function determineGold() {
-
 }
 
 export function getRookMoves(origin, LUT, activePlayer) {
     const originColor = activePlayer
             
     /* get theoretical moves */
-    const theoreticalMoveList = moveTheoretical(origin);
+    const theoreticalMoveList = moveTheoreticalRook(origin);
     
     /* validate theoretical moves */
     const validatedMoveList = filterRays(theoreticalMoveList,LUT,originColor);
 
-    const movesObj = makeObj(validatedMoveList);
+    const objGBPAu = makeRPG(validatedMoveList, LUT, originColor, origin);
 
-    return movesObj
+    /* const movesObj = makeObj(validatedMoveList);
+
+    return movesObj */
+    //return validatedMoveList;
+    return objGBPAu
     
 }

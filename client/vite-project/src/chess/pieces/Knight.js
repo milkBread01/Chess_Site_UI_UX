@@ -1,5 +1,5 @@
-//import Attack from "./Attack"
-import { stringToNumeric, numericStringToString, filterNonRays, makeObj } from "./Utils";
+import { makeRPG } from "./Attack.js"
+import { stringToNumeric, numericStringToString, filterNonRays, makeObj } from "./Utils.js";
 
 /* 
     Knight
@@ -19,7 +19,7 @@ import { stringToNumeric, numericStringToString, filterNonRays, makeObj } from "
 
 */
 
-function moveTheoretical(origin) {
+export function moveTheoreticalKnight(origin) {
     
     let theoreticalMoveList = {};
 
@@ -53,18 +53,9 @@ function moveTheoretical(origin) {
         directionMoves.push(numericStringToString(`${currentRow}${currentCol}`));
         theoreticalMoveList[`d${m}`] = directionMoves;
     }
-    console.log(theoreticalMoveList)
+    //console.log(theoreticalMoveList)
 
     return theoreticalMoveList;/*ex: "e5", "f6", "g7", "h8" */
-
-}
-
-
-function determinePurple() {
-
-}
-
-function determineGold() {
 
 }
 
@@ -73,13 +64,19 @@ export function getKnightMoves(origin, LUT, activePlayer) {
     const originColor = activePlayer
         
     /* get theoretical moves */
-    const theoreticalMoveList = moveTheoretical(origin);
+    const theoreticalMoveList = moveTheoreticalKnight(origin);
     
-    /* validate theoretical moves */
+    /* validate theoretical moves
+        returns type:
+        { a1: 'green', b1: 'green', c1: 'blue' }
+    */
     const validatedMoveList = filterNonRays(theoreticalMoveList,LUT,originColor);
 
-    const movesObj = makeObj(validatedMoveList);
+    const objGBPAu = makeRPG(validatedMoveList, LUT, originColor, origin);
 
-    return movesObj
+    // const movesObj = makeObj(validatedMoveList);
+    //return movesObj
+    //return validatedMoveList;
+    return objGBPAu
     
 }

@@ -6,7 +6,8 @@ DROP TABLE IF EXISTS user_accounts CASCADE;
 CREATE TABLE user_accounts (
 	account_id        INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
 	name              TEXT NOT NULL,
-	username          VARCHAR(150) NOT NULL,
+	username          VARCHAR(150) NOT NULL UNIQUE,
+	email             VARCHAR(255) NOT NULL UNIQUE,
 	password_hash     TEXT NOT NULL,
 	verified          BOOLEAN NOT NULL DEFAULT FALSE,
 	created_at        TIMESTAMPTZ NOT NULL DEFAULT NOW()

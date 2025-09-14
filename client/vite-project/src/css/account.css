@@ -1,9 +1,9 @@
 :root{
-    --pagebackground: #353e43;      /* page background */
-    --textColor: #ffffff;     /* base text */
-    --line: #7f8a90;    /* subtle borders */
-    --blue: #B9D9EB;    /* accent 1 */
-    --gold: #C2A669;    /* accent 2 */
+    --pagebackground: #353e43;
+    --textColor: #ffffff;
+    --line: #7f8a90;
+    --blue: #B9D9EB;
+    --gold: #C2A669;
 }
 
 .account-main{

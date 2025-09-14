@@ -45,8 +45,17 @@ export function numericToString([row, col]) {
 */
 export function numericStringToString(numericString){
 
-    const row = Number(numericString[0])
-    const col = Number(numericString[1])
+    if (numericString.length < 2) {
+        return null;
+    }
+
+    const row = Number(numericString[0]);
+    const col = Number(numericString.slice(1)); // Use slice to handle negative numbers
+
+    // Validate bounds
+    if (row < 0 || row > 7 || col < 0 || col > 7) {
+        return null;
+    }
 
     const file = String.fromCharCode("a".charCodeAt(0) + col);
     const rank = 8 - row;
@@ -95,23 +104,21 @@ export function filterRays(theoreticalMoveList, LUT, originColor) {
         h1: "green"
         h2: "blue"
     */
-
-    let colorMap = makeB(validatedMoveList, enemySquares); 
-
-    return validatedMoveList;
-}
-
-function makeB(validatedMoveList, enemySquares){
-    let colorMap = {}
-
-    for ( const square of validatedMoveList ){
-        colorMap[square] = enemySquares.includes(square) ? "blue" : "green"
+    if(enemySquares){
+        let objGB = makeB(validatedMoveList,enemySquares);
+        /* console.log("RAYS")
+        console.log(objGB) */
+        return objGB
+    }else{
+        return objGB = {};
     }
-    return colorMap
+    
+
+    //return validatedMoveList;
 }
 
 export function filterNonRays(theoreticalMoves, LUT, originColor){
-    console.log("FILTER NON RAY BUCKETS")
+    //console.log("FILTER NON RAY BUCKETS")
     let valid = [];
     let enemySquares = [];
 
@@ -132,136 +139,143 @@ export function filterNonRays(theoreticalMoves, LUT, originColor){
         }
     }
 
-    let colorMap = makeB(validatedMoveList, enemySquares);
-
-    return valid;
+    if(enemySquares){
+        /* console.log(`VALID ${valid}`)
+        console.log(`ENEMIES ${enemySquares}`) */
+        let objGB = makeB(valid,enemySquares);
+        /* console.log(`obj`)
+        console.log(objGB) */
+        return objGB
+    }else{
+        return objGB = {};
+    }
+    //return valid;
 }
 
-export function filterPawn(LUT, originColor, origin){
-    /* 
-        search for pawn pos on LUT to determin if allowed to move 2 spaces
-            row 6 for white 
-            row 1 for black
-        search for obstructions in vertical direction and for other pieces diagonal 
-            [-1, -1] && [-1, 1]
-        from origin to determine if enemy piece is present, ignore friendly
-    */
+function makeB(validatedMoveList, enemySquares){
+    let colorMap = {}
+    //console.log("MAKE OBJ GB")
 
+    for ( const square of validatedMoveList ){
+        
+        colorMap[square] = enemySquares.includes(square) ? "blue" : "green";
+    }
+    //console.log(colorMap)
+    return colorMap
+}
+function safeCreatePosition(row, col) {
+    if (row < 0 || row > 7 || col < 0 || col > 7) {
+        return null;
+    }
+
+    const file = String.fromCharCode("a".charCodeAt(0) + col);
+    const rank = 8 - row;
+
+    return `${file}${rank}`;
+}
+export function filterPawn(LUT, originColor, origin) {
     let valid = [];
-    const originRC = stringToNumeric(origin)
-    console.log(`Grid Pos: ${origin} \n row: ${originRC[0]} \n col: ${originRC[1]}`)
-
-    if (originColor==="white" && originRC[0] === 6){
-        console.log(`COLOR IS WHITE AND BASE ROW`)
-        let verticalUp1 = numericStringToString(`${originRC[0]-1}${originRC[1]}`);
-        let verticalUp2 = numericStringToString(`${originRC[0]-2}${originRC[1]}`);
-
-        if (!LUT[verticalUp1]){
-            valid.push(verticalUp1)
-        }
-
-        if (!LUT[verticalUp2]){
-            valid.push(verticalUp2)
-        }
-
-        let diagonalL = numericStringToString(`${originRC[0]-1}${originRC[1]-1}`);
-        let diagonalR = numericStringToString(`${originRC[0]-1}${originRC[1]+1}`); 
-
-        if (LUT[diagonalL]){
-            if(LUT[diagonalL].color !== originColor){
-                valid.push(diagonalL)
-            }
-        }
-
-        if (LUT[diagonalR]){
-            if(LUT[diagonalR].color !== originColor){
-                valid.push(diagonalR)
-            }
-        }
-
-        return valid
+    let enemySquares = [];
+    const originRC = stringToNumeric(origin);
+    
+    if (!originRC) {
+        console.error("Invalid origin:", origin);
+        return makeB(valid, enemySquares);
     }
 
-    if ( originColor==="white"){
-        let verticalUp1 = numericStringToString(`${originRC[0]-1}${originRC[1]}`)
+    console.log(`Grid Pos: ${origin} \n row: ${originRC[0]} \n col: ${originRC[1]}`);
 
-        if(!LUT[verticalUp1]){
-            valid.push(verticalUp1)
+    // Helper function to safely create position strings
+    const safeCreatePosition = (row, col) => {
+        if (row < 0 || row > 7 || col < 0 || col > 7) {
+            return null;
         }
+        return numericStringToString(`${row}${col}`);
+    };
 
-        let diagonalL = numericStringToString(`${originRC[0]-1}${originRC[1]-1}`);
-        let diagonalR = numericStringToString(`${originRC[0]-1}${originRC[1]+1}`); 
-
-        if(LUT[diagonalL]){
-            if(LUT[diagonalL].color !== originColor){
-                valid.push(diagonalL)
+    if (originColor === "white") {
+        const newRow = originRC[0] - 1;
+        
+        // Forward movement
+        if (newRow >= 0) {
+            const verticalUp1 = safeCreatePosition(newRow, originRC[1]);
+            if (verticalUp1 && !LUT[verticalUp1]) {
+                valid.push(verticalUp1);
+                
+                // Two-square move from starting position
+                if (originRC[0] === 6) {
+                    const verticalUp2 = safeCreatePosition(newRow - 1, originRC[1]);
+                    if (verticalUp2 && !LUT[verticalUp2]) {
+                        valid.push(verticalUp2);
+                    }
+                }
             }
         }
 
-        if(LUT[diagonalR]){
-            if(LUT[diagonalR].color !== originColor){
-                valid.push(diagonalR)
+        // Diagonal captures
+        if (newRow >= 0) {
+            // Left diagonal
+            if (originRC[1] > 0) {
+                const diagonalL = safeCreatePosition(newRow, originRC[1] - 1);
+                if (diagonalL && LUT[diagonalL] && LUT[diagonalL].color !== originColor) {
+                    valid.push(diagonalL);
+                    enemySquares.push(diagonalL);
+                }
+            }
+
+            // Right diagonal
+            if (originRC[1] < 7) {
+                const diagonalR = safeCreatePosition(newRow, originRC[1] + 1);
+                if (diagonalR && LUT[diagonalR] && LUT[diagonalR].color !== originColor) {
+                    valid.push(diagonalR);
+                    enemySquares.push(diagonalR);
+                }
             }
         }
-
-        return valid
     }
 
-    if (originColor==="black" && originRC[0] === 1){
-        console.log(`COLOR IS BLACK AND BASE ROW`)
-        let verticalDown1 = numericStringToString(`${originRC[0]+1}${originRC[1]}`);
-        let verticalDown2 = numericStringToString(`${originRC[0]+2}${originRC[1]}`);
-
-        if(!LUT[verticalDown1]){
-            valid.push(verticalDown1)
-        }
-
-        if(!LUT[verticalDown2]){
-            valid.push(verticalDown2)
-        }
-
-        let diagonalL = numericStringToString(`${originRC[0]+1}${originRC[1]-1}`);
-        let diagonalR = numericStringToString(`${originRC[0]+1}${originRC[1]+1}`); 
-
-        if(LUT[diagonalL]){
-            if(LUT[diagonalL].color !== originColor){
-                valid.push(diagonalL)
+    if (originColor === "black") {
+        const newRow = originRC[0] + 1;
+        
+        // Forward movement
+        if (newRow <= 7) {
+            const verticalDown1 = safeCreatePosition(newRow, originRC[1]);
+            if (verticalDown1 && !LUT[verticalDown1]) {
+                valid.push(verticalDown1);
+                
+                // Two-square move from starting position
+                if (originRC[0] === 1) {
+                    const verticalDown2 = safeCreatePosition(newRow + 1, originRC[1]);
+                    if (verticalDown2 && !LUT[verticalDown2]) {
+                        valid.push(verticalDown2);
+                    }
+                }
             }
         }
 
-        if(LUT[diagonalR]){
-            if(LUT[diagonalR].color !== originColor){
-                valid.push(diagonalR)
+        // Diagonal captures
+        if (newRow <= 7) {
+            // Left diagonal
+            if (originRC[1] > 0) {
+                const diagonalL = safeCreatePosition(newRow, originRC[1] - 1);
+                if (diagonalL && LUT[diagonalL] && LUT[diagonalL].color !== originColor) {
+                    valid.push(diagonalL);
+                    enemySquares.push(diagonalL);
+                }
+            }
+
+            // Right diagonal
+            if (originRC[1] < 7) {
+                const diagonalR = safeCreatePosition(newRow, originRC[1] + 1);
+                if (diagonalR && LUT[diagonalR] && LUT[diagonalR].color !== originColor) {
+                    valid.push(diagonalR);
+                    enemySquares.push(diagonalR);
+                }
             }
         }
-
-        return valid
     }
 
-    if(originColor==="black"){
-        let verticalDown1 = numericStringToString(`${originRC[0]+1}${originRC[1]}`)
-
-        if(!LUT[verticalDown1]){
-            valid.push(verticalDown1)
-        }
-
-        let diagonalL = numericStringToString(`${originRC[0]+1}${originRC[1]-1}`);
-        let diagonalR = numericStringToString(`${originRC[0]+1}${originRC[1]+1}`); 
-
-        if(LUT[diagonalL]){
-            if(LUT[diagonalL].color !== originColor){
-                valid.push(diagonalL)
-            }
-        }
-
-        if(LUT[diagonalR]){
-            if(LUT[diagonalR].color !== originColor){
-                valid.push(diagonalR)
-            }
-        }
-
-        return valid
-    }
+    return makeB(valid, enemySquares);
 }
 
 export function makeObj(moveList, color = "green") {

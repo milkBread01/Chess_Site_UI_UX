@@ -50,7 +50,7 @@
 
 .card-image-container {
     position: relative;
-    height: 200px;
+    height: 25vh;
     background-color: #f8f8f8;
     display: flex;
     align-items: center;
@@ -60,16 +60,8 @@
     background-position: center;
 }
 
-.card-image-placeholder {
-    width: 80px;
-    height: 80px;
-    background-color: #ddd;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #666;
-    font-size: 0.8rem;
+.card-image-container img {
+    width: 40%
 }
 
 .card-header-container {
@@ -79,7 +71,6 @@
     color: #F2F0EF;
     font-weight: 500;
     text-transform: uppercase;
-    letter-spacing: 0.05rem;
 }
 
 .card-overlay {

@@ -103,9 +103,11 @@
 .grid-square.dark:hover {
     background-color: rgba(0, 0, 0, 0.2);
 }
+
 .grid-square.is-selected {
     background: #6af8fd;
 }
+
 .grid-square.color-blue {
     background: var(--blue) !important;
     color: #fff;
@@ -113,6 +115,11 @@
 
 .grid-square.color-green {
     background: var(--green) !important;
+    color: #222;
+}
+
+.grid-square.color-purple {
+    background: var(--purple) !important;
     color: #222;
 }
 

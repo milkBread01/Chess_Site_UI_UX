@@ -1,14 +1,14 @@
 import express from "express";
 const app = express();
 
-import employeesRouter from "#api/employees";
+import userRouter from "#api/UserRecords";
 app.use(express.json());
 
 app.get("/", (req, res) => {
-    res.status(200).send("Welcome to the Fullstack Employees API.");
+    res.status(200).send("Chess API is running...");
 });
 
-app.use("/employees", employeesRouter);
+app.use("/api", userRouter);
 
 export default app;
 

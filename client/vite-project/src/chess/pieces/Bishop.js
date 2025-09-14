@@ -1,5 +1,5 @@
-//import Attack from "./Attack"
-import { stringToNumeric, numericStringToString, filterRays, makeObj } from "./Utils";
+import { makeRPG } from "./Attack.js"
+import { stringToNumeric, numericStringToString, filterRays, makeObj } from "./Utils.js";
 /* 
     a1: {
         "id": "wr-3",
@@ -41,7 +41,7 @@ for each validated move spot, loop through list treating each value as origin; a
         row > 8 || col < 0
 */
 
-function moveTheoretical(origin) {
+export function moveTheoreticalBishop(origin) {
     let theoreticalMoveList = {};
 
     const [row,col] = stringToNumeric(origin);
@@ -71,18 +71,18 @@ function moveTheoretical(origin) {
         }
         theoreticalMoveList[`d${m}`] = directionMoves;
     }
-    console.log(theoreticalMoveList)
+    //console.log(theoreticalMoveList)
     return theoreticalMoveList;
 /* 
 {
-  d0: [ 'c5', 'b6', 'a7' ],
-  d1: [ 'd5', 'd6', 'd7', 'd8' ],
-  d2: [ 'e5', 'f6', 'g7', 'h8' ],
-  d3: [ 'e4', 'f4', 'g4', 'h4' ],
-  d4: [ 'e3', 'f2', 'g1' ],
-  d5: [ 'd3', 'd2', 'd1' ],
-  d6: [ 'c3', 'b2', 'a1' ],
-  d7: [ 'c4', 'b4', 'a4' ]
+    d0: [ 'c5', 'b6', 'a7' ],
+    d1: [ 'd5', 'd6', 'd7', 'd8' ],
+    d2: [ 'e5', 'f6', 'g7', 'h8' ],
+    d3: [ 'e4', 'f4', 'g4', 'h4' ],
+    d4: [ 'e3', 'f2', 'g1' ],
+    d5: [ 'd3', 'd2', 'd1' ],
+    d6: [ 'c3', 'b2', 'a1' ],
+    d7: [ 'c4', 'b4', 'a4' ]
 } 
 */
 
@@ -95,13 +95,18 @@ export function getBishopMoves(origin, LUT, activePlayer){
     /* LUT | OBJ |  */
 
     /* get theoretical moves */
-    const theoreticalMoveList = moveTheoretical(origin);
+    const theoreticalMoveList = moveTheoreticalBishop(origin);
     
     /* validate theoretical moves */
     const validatedMoveList = filterRays(theoreticalMoveList,LUT,originColor);
 
-    const movesObj = makeObj(validatedMoveList);
+    const objGBPAu = makeRPG(validatedMoveList, LUT, originColor, origin);
 
-    return movesObj
+    /* const movesObj = makeObj(validatedMoveList);
+
+    return movesObj */
+    
+    //return validatedMoveList;
+    return objGBPAu
 }
 

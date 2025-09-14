@@ -1,4 +1,4 @@
-const pg = require("pg");
+import pg from "pg";
 const client = new pg.Client(process.env.DATABASE_URL);
 
-module.exports = client;
+export default client;

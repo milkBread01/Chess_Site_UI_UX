@@ -18,6 +18,8 @@ import '../../css/GamePage.css';
 import '../../css/Board.css';
 import '../../css/captured-pieces.css';
 import '../../css/pop-up.css';
+import '../../css/promotion-menu.css';
+import '../../css/start-game-form.css';
 
 export default function Layout() {
   return (

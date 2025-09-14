@@ -1,0 +1,120 @@
+
+.sg-overlay {
+    position: fixed;
+    inset: 0;
+    background: var(--menu-overlay);
+    backdrop-filter: blur(2px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    transition: opacity 160ms ease;
+}
+
+.start-game-container {
+    width: min(92vw, 520px);
+    background: #141a1f;
+    color: #e9edf1;
+    border: 1px solid #2b353b;
+    border-radius: 14px;
+    box-shadow: 0 24px 64px rgba(0,0,0,0.45);
+    padding: 1.25rem;
+    transform: translateY(8px) scale(0.985);
+    transition: transform 180ms ease;
+}
+
+.sg-overlay.is-open .start-game-container {
+    transform: translateY(0) scale(1);
+}
+
+.sg-form {
+    display: grid;
+    gap: 1rem;
+}
+
+.form-group {
+    display: grid;
+    gap: 0.5rem;
+}
+
+.form-group label {
+    font-size: 0.95rem;
+    color: #cfd6dc;
+}
+
+.sg-form input[type="text"],
+.sg-form input[type="number"] {
+    width: 100%;
+    padding: 0.6rem 0.75rem;
+    border-radius: 10px;
+    border: 1px solid #334049;
+    background: #1b242a;
+    color: #e9edf1;
+    outline: none;
+}
+
+.sg-form input[type="text"]:focus,
+.sg-form input[type="number"]:focus {
+    border-color: #4aa7ff;
+    box-shadow: 0 0 0 3px rgba(74, 167, 255, 0.2);
+}
+
+.time-inputs {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.time-inputs span {
+    user-select: none;
+    opacity: 0.7;
+}
+
+.radio-group {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.radio-group label {
+    display: inline-flex;
+    gap: 0.5rem;
+    align-items: center;
+    cursor: pointer;
+    color: #e9edf1;
+}
+
+.radio-group input[type="radio"] {
+    accent-color: #4aa7ff;
+}
+
+.sg-submit {
+    width: 100%;
+    padding: 0.8rem 1rem;
+    border: 1px solid #3a4750;
+    background: #1f2a30;
+    color: #f2f0ef;
+    border-radius: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 120ms ease, box-shadow 120ms ease, background 120ms ease;
+}
+
+.sg-submit:hover {
+    background: #253239;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+}
+
+.sg-submit:active {
+    transform: translateY(1px);
+}
+
+/* Small screens */
+@media (max-width: 420px) {
+    .start-game-container {
+        padding: 1rem;
+        width: 94vw;
+    }
+}

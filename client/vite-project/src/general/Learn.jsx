@@ -15,16 +15,26 @@ export default function Learn() {
                 subtitle = {heroSubtitle}
             />
 
-            <section className ="">
-                <div>
-
+            <section className ="learn-history">
+                <div className="history-header">
+                    <h2></h2>
                 </div>
-                <div>
+
+                <div className="history-body">
 
                 </div>
             </section>
 
-            <section className ="">
+            <section className ="learn-pieces">
+                <div className="">
+
+                </div>
+                <div className="">
+                    
+                </div>
+            </section>
+
+            <section className ="learn-specail-cases">
                 <div>
 
                 </div>
@@ -33,16 +43,7 @@ export default function Learn() {
                 </div>
             </section>
 
-            <section className ="">
-                <div>
-
-                </div>
-                <div>
-                    
-                </div>
-            </section>
-
-            <section className ="">
+            <section className ="learn-strategy">
                 <div>
 
                 </div>

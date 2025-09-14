@@ -1,16 +1,16 @@
 import { useState } from "react";
 import Hero from "../../general/components/hero";
 import heroImage from "../../assets/hero3.jpg";
+import StartGamePop from "./StartGamePop";
 const heroTitle = "Play Chess";
 const heroSubtitle = "Jump into a game! Play local PvP or challenge our AI.";
 
 export default function PlayDash() {
-    const [ showPopup, setPopup ] = useState(false);
-    function handleClick() {
-        setPopup(true);
-    }
-    function handleClose() {
-        setPopup(false);
+    const [ showStartGameForm, setShowStartGameForm ] = useState(false);
+    const [ formData, setFormData] = useState(null);
+    
+    function handleStart() {
+        setShowStartGameForm((p) => !p)
     }
     return (
         <>
@@ -31,7 +31,7 @@ export default function PlayDash() {
                     <div className = "play-dash-button-container">
                         <button 
                             className = "button-type-2"
-                            onClick = { handleClick}
+                            onClick = { handleStart}
                         >
                             Player vs Player (local)
                         </button>
@@ -41,10 +41,9 @@ export default function PlayDash() {
                         </button>
                     </div>
                 </section>
-
-                {showPopup && (
-                    <h1>hello</h1>
-                )}
+                <StartGamePop
+                    showForm={showStartGameForm} 
+                />
                 
             </main>
         </>

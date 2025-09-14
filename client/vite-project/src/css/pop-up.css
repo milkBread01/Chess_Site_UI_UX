@@ -1,29 +1,22 @@
-/* =======================
-   Game Menu (overlay + panel)
-   ======================= */
 
 :root{
-  --menu-overlay: rgba(0,0,0,0.6);     /* dark, opaque-ish backdrop */
-  --panel-bg: #141a1f;                 /* dark panel */
-  --panel-border: #2b353b;             /* subtle border */
-  --panel-radius: 12px;
-  --panel-shadow: 0 16px 48px rgba(0,0,0,0.45);
-
-  /* Base (shared) button styling */
-  --btn-ink: #f2f0ef;
-  --btn-bg: #1b242a;                   /* fallback bg for base */
-  --btn-border: #3a4750;
-
-  /* Accent colors (you can tweak to match your palette) */
-  --green2: #28c28b;    /* Resume */
-  --orange: #f59e0b;   /* Restart */
-  --yellow: #eab308;   /* Toggle Assist */
-  --red: #ef4444;      /* Quit */
+    --menu-overlay: rgba(0,0,0,0.6);
+    --panel-bg: #141a1f;
+    --panel-border: #2b353b;
+    --panel-radius: 12px;
+    --panel-shadow: 0 16px 48px rgba(0,0,0,0.45);
+    --btn-ink: #f2f0ef;
+    --btn-bg: #1b242a;
+    --btn-border: #3a4750;
+    --green2: #28c28b;
+    --orange: #f59e0b;
+    --yellow: #eab308;
+    --red: #ef4444;
 }
 
 .menu-wrapper {
     width: fit-content;
-    background: #1a1f23; /* dark panel */
+    background: #1a1f23;
     border: 2px solid #2b353b;
     border-radius: 12px;
     box-shadow: 0 12px 36px rgba(0, 0, 0, 0.5);
@@ -34,7 +27,6 @@
 
 }
 
-/* Full-screen overlay */
 .game-menu{
     position: fixed;
     inset: 0;

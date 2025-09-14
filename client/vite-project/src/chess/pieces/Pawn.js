@@ -1,4 +1,4 @@
-//import Attack from "./Attack"
+import { makeRPG } from "./Attack"
 import { stringToNumeric, numericStringToString, filterPawn, makeObj } from "./Utils";
 
 /* 
@@ -60,11 +60,23 @@ function determineGold() {
 export function getPawnMoves(origin, LUT, activePlayer) {
     const originColor = activePlayer
     
-    /* validate theoretical moves */
-    const validatedMoveList = filterPawn(LUT,originColor, origin);
+    /* 
+    returns object in format
+    {
+        h1: "green", 
+        h2: "blue", 
+        h3: "green" 
+    }
+    */
+    const validatedMoveList = filterPawn(LUT, originColor, origin);
 
-    const movesObj = makeObj(validatedMoveList);
+    const objGBPAu = makeRPG(validatedMoveList, LUT, originColor, origin);
 
-    return movesObj
+    /* const movesObj = makeObj(validatedMoveList);
+
+    return movesObj */
+
+    //return validatedMoveList;
+    return objGBPAu
     
 }

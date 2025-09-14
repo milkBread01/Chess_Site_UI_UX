@@ -1,7 +1,7 @@
 import CTA from "./components/CTA_button_section";
 
 export default function Home() {
-    const cardNames = ["Pawn", "Rook", "Knight", "Bishop", "Queen", "King"];
+    const cardNames = ["pawn", "rook", "knight", "bishop", "queen", "king"];
     const cardDescriptions = [
             "Moves forward one square, or two on first move. Captures diagonally forward.",
             "Moves horizontally and vertically any number of squares. Cannot jump over pieces.",
@@ -10,7 +10,7 @@ export default function Home() {
             "Most powerful piece. Combines rook and bishop moves - any direction, any distance.",
             "Most important piece. Moves one square in any direction. Must be protected at all costs."
         ];
-    const cardImagePath = "./chess/assets/black pieces/";
+    const cardImagePath = "/chess/black-pieces/";
     
     return (
         <>
@@ -52,7 +52,7 @@ export default function Home() {
 
                     <div className = "cards-container">
                         {cardNames.map((val, i) => {
-                            const fullImgPath = `${cardImagePath}${val}.jpg`; 
+                            const fullImgPath = `${cardImagePath}${val}.png`; 
                             return (
                                 <div className = "card-wrapper" key={val}>
                                     <div className = "card-image-container">
