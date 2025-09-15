@@ -16,16 +16,23 @@ export default function GameMenu({showMenu, onMenuPress}) {
                         >
                             Resume
                         </button>
+
+                        {/* 2B updated */}
+                        {/* 
                         <button className = "menu-btn orange"
                             onClick = {() =>onMenuPress("restart")}
                         >
                             Restart
                         </button>
+                         */}
+
+                        {/* 
                         <button className = "menu-btn yellow"
                             onClick = {() =>onMenuPress("assist")}
                         >
                             Toggle Assist
                         </button>
+                         */}
                         <button className = "menu-btn red"
                             onClick = {() =>onMenuPress("quit")}
                         >

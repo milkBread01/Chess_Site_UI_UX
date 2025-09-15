@@ -1,7 +1,12 @@
-import { useState } from "react";
+/* Store the game information and pass to GamePage */
+
+import { useNavigate } from "react-router-dom";
+import React, { createContext, useState } from "react";
+
 
 export default function StartGamePop({showForm}) {
-    if(!showForm) return null
+    if(!showForm) return null;
+    const navigate = useNavigate();
 
     const [formData, setFormData] = useState({
         guestName: "",
@@ -11,18 +16,34 @@ export default function StartGamePop({showForm}) {
     });
 
     function handleInputChange(e) {
-        const { key, value } = e.target;
+        const { name, value } = e.target;
         setFormData(prev => ({
             ...prev,
-            [key]: value
+            [name]: value
         }))
+    }
+
+    function handleSubmit(e) {
+        e.preventDefault();
+        const min = Number(formData.minutes);
+        const sec = Number(formData.seconds);
+
+        const gameInfo = {
+            guestName: formData.guestName,
+            timePerTurn: min * 60 + sec,
+            loggedInColor: formData.loggedInColor
+        };
+        // Navigate to the game page with form data
+        navigate('/game', { state: { gameInfo } });
+
     }
 
     return(
         <>
             <div className = "sg-overlay" role="dialog">
                 <section className = "start-game-container">
-                    <form className = "sg-form">
+                    <form className = "sg-form" onSubmit={handleSubmit}>
+                        <h2>Start New Game</h2>
                         <div className="form-group">
 
                             <label>Guest Player Name</label>
@@ -71,9 +92,11 @@ export default function StartGamePop({showForm}) {
                                 <label>
                                     <input
                                         type="radio"
-                                        name="color"
-                                        value="white"
+                                        name="loggedInColor"
+                                        value="white"                                        
                                         required
+                                        checked={formData.loggedInColor === "white"}
+                                        onChange={handleInputChange}
                                     />
                                     White
                                 </label>
@@ -81,20 +104,15 @@ export default function StartGamePop({showForm}) {
                                 <label>
                                     <input
                                         type="radio"
-                                        name="color"
-                                        value="black" 
+                                        name="loggedInColor"
+                                        value="black"
+                                        checked={formData.loggedInColor === "black"}
+                                        onChange={handleInputChange}
+                                        required
                                     />
                                     Black
                                 </label>
 
-                                <label>
-                                    <input
-                                        type="radio"
-                                        name="color"
-                                        value="random"
-                                    />
-                                    Random
-                                </label>
                             </div>
                         </div>
 

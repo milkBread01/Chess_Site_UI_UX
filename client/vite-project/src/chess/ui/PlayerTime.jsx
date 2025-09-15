@@ -1,13 +1,16 @@
 import { useState, useEffect, useRef } from "react";
 
+
 export default function PlayerTime({
     playerInfo,
     playerTimeRunning,
     activePlayer,
     id,
     advanceTurn,
+    playerTimePerTurn
 }) {
-    const [playerTime, setPlayerTime] = useState(120);
+    const PT = playerTimePerTurn || 300; // default to 120 seconds if not provided
+    const [playerTime, setPlayerTime] = useState(PT);
     const intervalRef = useRef(null);
     const isRunning = playerTimeRunning && activePlayer === id;
 
@@ -15,7 +18,7 @@ export default function PlayerTime({
     useEffect(() => {
         // Reset this player's time when it becomes their turn
         if (activePlayer === id) {
-            setPlayerTime(120);
+            setPlayerTime(PT);
         }
     }, [activePlayer, id]);
 

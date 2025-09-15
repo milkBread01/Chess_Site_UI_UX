@@ -7,11 +7,13 @@ export default function GamePeripheralsMenu({
     player2Info, 
     gameTimeRunning,/* boolean is clock on */  
     onToggleMenu, 
-    activePlayer, /* active player 1 or 2*/
+    activePlayer, /* active player white or black*/
     playerTimeRunning,
-    advanceTurn
+    advanceTurn,
+    playerTime
 }) {
 
+    const perTurn = playerTime || 300; // default to 120 seconds if not provided
     return(
         <>
             <div className = "peripherals-wrapper">
@@ -32,6 +34,7 @@ export default function GamePeripheralsMenu({
                             activePlayer = {activePlayer}
                             id = "white"
                             advanceTurn={advanceTurn}
+                            playerTimePerTurn = {perTurn}
                         />
                     </div>
 
@@ -52,6 +55,8 @@ export default function GamePeripheralsMenu({
                             playerTimeRunning={playerTimeRunning}
                             activePlayer = {activePlayer}
                             id = "black"
+                            advanceTurn={advanceTurn}
+                            playerTimePerTurn = {perTurn}
                         />
                     </div>
                 </div>

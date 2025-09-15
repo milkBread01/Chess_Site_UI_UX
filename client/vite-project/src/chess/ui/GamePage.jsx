@@ -1,5 +1,5 @@
-import { useState, useEffect, useCallback } from 'react';
-import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from 'react';
+import { useNavigate, useLocation } from "react-router-dom";
 
 import GamePeripheralsMenu from "./GamePeripheralsMenu";
 import Board from "./Board";
@@ -61,6 +61,15 @@ function handleInitPos() {
 export default function GamePage() {
 
     const navigate = useNavigate();
+    const { state } = useLocation();
+    const { guestName, timePerTurn, loggedInColor } = state?.gameInfo || 
+    {guestName: "Guest", timePerTurn: 300, loggedInColor: "white"};
+    const guestColor = loggedInColor === "white" ? "black" : "white";
+
+    /* if (!state || !state.gameInfo) {
+        navigate('/play'); // Redirect to /play if no state
+        return null; // Prevent rendering
+    } */
 
     const [showStart, setShowStart] = useState(true);
     const [showMenu, setShowMenu] = useState(true);
@@ -155,13 +164,13 @@ export default function GamePage() {
     
     const player1Info = {
         playerName: "Player 1",
-        playerColor: "white",
+        playerColor: loggedInColor,
 
     };
 
     const player2Info = {
-        playerName: "Player 2",
-        playerColor: "black",
+        playerName: guestName,
+        playerColor: guestColor,
 
     };
 
@@ -448,7 +457,8 @@ export default function GamePage() {
                         onToggleMenu = {handleToggleGameTime}
                         activePlayer={activePlayer}
                         playerTimeRunning={playerTimeRunning}
-                        advanceTurn = {advanceTurn}
+                        advanceTurn = {endTurn}
+                        playerTime = {timePerTurn}
                     />
 
                 </section>
