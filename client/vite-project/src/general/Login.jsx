@@ -1,10 +1,13 @@
-import { useState } from "react"
+import { useState, useContext } from "react"
 import { useNavigate } from "react-router-dom";
+import { UserContext } from "./UserContext";
 
 export default function Login() {
 
     const navigate = useNavigate();
-    const [user, setUser] = useState(null)
+    //const [user, setUser] = useState(null)
+    const { user, setUser } = useContext(UserContext);
+
     const [formData, setFormData] = useState({
         username: "",
         password: ""
@@ -43,7 +46,7 @@ export default function Login() {
         const err = validateForm();
         setFormErros(err);
         console.log(err)
-        if(!err) return;
+        if (Object.keys(err).length > 0) return;
 
         setSubmitting(true);
 
@@ -63,14 +66,10 @@ export default function Login() {
                 setSubmitting(false);
                 return;
             }
+
             const data = await res.json();
-
-            localStorage.setItem("token", data.token);
-            localStorage.setItem("user", JSON.stringify(data.user));
-            
-            setUser(data.user)
+            setUser(data.user);
             navigate("/home")
-
         }catch(er){
             setReturnErrors("Network error occurred")
             setSubmitting(false)
@@ -143,4 +142,6 @@ export default function Login() {
             </main>
         </>
     );
+
+
 }

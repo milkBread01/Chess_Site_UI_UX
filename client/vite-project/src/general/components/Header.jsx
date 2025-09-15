@@ -1,7 +1,17 @@
 import { useState } from "react";
+import { useContext } from "react";
+import { UserContext } from "../UserContext";
+import { useNavigate } from "react-router-dom";
 
 export default function Header() {
   const [open, setOpen] = useState(false);
+  const { user } = useContext(UserContext);
+  const navigate = useNavigate();
+
+  function handleLogout() {
+    setUser(null);
+    navigate("/login");
+  }
 
   return (
     <header className="site-header" role="banner">
@@ -33,13 +43,21 @@ export default function Header() {
                 </button>
 
                 <div className="dropdown">
-                    <a href="/register">Register</a>
-                    <a href="/login">Login</a>
-                    <a href="/account">Account Info</a>
+                    {!user ? (
+                        <>
+                            <a href="/login">Login</a>
+                            <a href="/register">Register</a>
+                        </>    
+                    ) : (
+                        <>
+                            <a href="/account">Account Info</a>
+                            <button onClick={handleLogout}>Logout</button>
+                        </>
+                    )}
+                    
                 </div>
             </div>
 
-            
         </div>
     </header>
   );

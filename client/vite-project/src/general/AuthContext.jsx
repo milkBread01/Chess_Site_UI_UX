@@ -10,11 +10,11 @@ export const Auth = () =>{
     return context;
 }
 
-export const AuthProvider = ({}=>{
+export const AuthProvider = ()=>{
     
     useEffect(()=>{
         async function chechAuthStatus(){
             
         }
     })
-})
+}
