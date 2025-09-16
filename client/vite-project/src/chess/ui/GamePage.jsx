@@ -1,5 +1,6 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { useNavigate, useLocation } from "react-router-dom";
+import { UserContext } from "../../general/UserContext"
 
 import GamePeripheralsMenu from "./GamePeripheralsMenu";
 import Board from "./Board";
@@ -20,6 +21,7 @@ import { getLegalMovesForPiece } from '../pieces/CheckCheck';
 import { stringToNumeric } from '../pieces/Utils';
 import PromotionMenu from './PromotionMenu';
 
+const [gameStartTime, setGameStartTime] = useState(null);
 
 let uid = 0;
 const basePath = "/chess/assets/";
@@ -78,6 +80,8 @@ export default function GamePage() {
     let showPromotionMenu = !!pendingPromotion;
 
     const [menuChoice, setMenuChoice] = useState(null);
+    const { user } = useContext(UserContext);
+    const player1Name = user?.username;
 
     const [chessBoard, setChessBoard] = useState(null); /* LUT for pieces */
     const [selected, setSelected] = useState(null); /* contains grid pos of selected grid */
@@ -163,7 +167,7 @@ export default function GamePage() {
     }
     
     const player1Info = {
-        playerName: "Player 1",
+        playerName: player1Name || "Player 1",
         playerColor: loggedInColor,
 
     };
@@ -186,6 +190,7 @@ export default function GamePage() {
             setGameTimeRunning(true);
             setPlayerTimeRunning((prev)=>!prev)
 
+            setGameStartTime(Date.now());
         }
     }
 
@@ -216,6 +221,7 @@ export default function GamePage() {
         console.log(chessBoard)
 
         setChessBoard(prev => {
+            
               
             const LUT = { ...prev };
             
@@ -290,6 +296,7 @@ export default function GamePage() {
         // update gameStates AFTER the board is updated
         if(gameStates.historyEntry) {
             setMoveHistory(h => [...h, gameStates.historyEntry]);
+            console.log(moveHistory)
         }
 
         if(gameStates.capturedType) {
@@ -376,10 +383,14 @@ export default function GamePage() {
 
         if (status.checkmate) {
             alert(`Checkmate! ${activePlayer} loses.`)
+            saveGame2DB("checkmate", winner)
         } else if (status.stalemate) {
             alert("Stalemate! Game is a draw.")
+            saveGame2DB("stalemate")
+
         } else if (status.inCheck) {
             alert(`${activePlayer} is in check!`);
+
         }
 
     }, [chessBoard, activePlayer])
@@ -408,44 +419,88 @@ export default function GamePage() {
 
     function getGridColors(piece,origin ,LUT) {
         return getLegalMovesForPiece(piece, origin, LUT);
-
-       /*  let baseHighlights = {};
-        
-        switch (piece.type) {
-            case "pawn":
-                baseHighlights = getPawnMoves(origin, LUT, piece.color);
-                break;
-            case "bishop":
-                baseHighlights = getBishopMoves(origin, LUT, piece.color);
-                break;
-            case "rook":
-                baseHighlights = getRookMoves(origin, LUT, piece.color);
-                break;
-            case "queen":
-                baseHighlights = getQueenMoves(origin, LUT, piece.color);
-                break;
-            case "knight":
-                baseHighlights = getKnightMoves(origin, LUT, piece.color);
-                break;
-            case "king":
-                baseHighlights = getKingMoves(origin, LUT, piece.color);
-                
-                // check if castling valid
-                const castlingHighlights = isCastlingOk(piece, LUT, moveHistory);
-                baseHighlights = {
-                    ...baseHighlights,
-                    ...castlingHighlights
-                };
-                break;
-
-            default:
-                baseHighlights = {};
-        }
-
-        return baseHighlights; */
-
     }
     
+    async function saveGame2DB(gameResult, winner = null ) {
+        if(!user?.accountId){
+            console.log("No User logged in");
+            return;
+        }
+
+        try {
+            const currentTime = Date.now();
+            const gameEndTime = gameStartTime ? (currentTime - gameStartTime) / 1000 : 0;
+
+            const isPlayerWhite = loggedInColor === "white";
+
+            let playerResult, userTime, opponentTime;
+
+            if(gameResult === "stalemate"){
+                playerResult = "stalemate";
+            }else{
+                const playerWon = (isPlayerWhite && winner === "white") || (!isPlayerWhite && winner === "black");
+                playerResult = playerWon ? "win" : "loss";
+            }
+
+            const numMoves = Math.ceil(moveHistory.length / 2);
+
+            const historyData = {
+                account_owner_id: user.accountId,
+                white_player_name: isPlayerWhite ? player1Name : guestName,
+                black_player_name: isPlayerWhite ? guestName : player1Name,
+                game_result: gameResult === "stalemate" ? "stalemate" : 
+                           winner === "white" ? "white_win" : "black_win",
+                moves: JSON.stringify({
+                    initial_board: handleInitPos(),
+                    move_history: moveHistory,
+                    final_board: chessBoard
+                })
+            }
+
+            const historyResponse = await fetch('/api/history', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                credentials: 'include',
+                body: JSON.stringify(historyData)
+            });
+
+            if (!historyResponse.ok) {
+                console.error('Failed to save game history');
+                return;
+            }
+
+            // Update user records
+            const recordData = {
+                account_id: user.accountId,
+                matchResults: playerResult,
+                matchTime: gameEndTime,
+                numMoves: numMoves
+            };
+
+            const recordResponse = await fetch('/api/records', {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                credentials: 'include',
+                body: JSON.stringify(recordData)
+            });
+
+            if (!recordResponse.ok) {
+                console.error('Failed to update user records');
+                return;
+            }
+
+            console.log('Game saved successfully to database');
+
+
+        }catch(error) {
+            console.error('Error saving game: ',error)
+        }
+    }
+
     return(
         <>
             <main className = "game-main">

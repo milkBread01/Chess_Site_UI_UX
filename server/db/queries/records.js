@@ -16,7 +16,7 @@ CREATE TABLE user_records (
 );
 */
 
-const updateRecord = async ({account_id, matchResults, matchTime, numMoves}) =>{
+const updateRecord = async ({account_id, matchResults, matchTime, numMoves}) => {
     const SQL = `
         UPDATE user_records
         SET num_matches_played = num_matches_played + 1,
@@ -41,7 +41,7 @@ const updateRecord = async ({account_id, matchResults, matchTime, numMoves}) =>{
 
 const getRecordByAccountId = async (account_id) => {
     const SQL = `
-        SELECT * WHERE account_id = $1;
+        SELECT * FROM user_records WHERE account_id = $1;
     `;
     const params = [account_id];
     const result = await client.query(SQL, params);

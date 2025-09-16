@@ -20,7 +20,6 @@ CREATE TABLE game_history (
 const createGameHistory = async ({ account_owner_id, white_player_name, black_player_name, game_result, white_time, black_time, moves }) => {
     const SQL = `
         INSERT INTO game_history (account_owner_id, white_player_name, black_player_name, game_result, white_time, black_time, moves) 
-        WHERE account_owner_id = $1
         VALUES ($1, $2, $3, $4, $5, $6, $7)
         RETURNING *;
     `;

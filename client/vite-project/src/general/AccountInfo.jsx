@@ -1,9 +1,53 @@
+import { UserContext } from "./UserContext";
+import { useContext, useState, useEffect } from "react";
+
 export default function AccountInfo() {
+
+    const [records, setRecords] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const { user } = useContext(UserContext);
+
+    useEffect(() => {
+        async function fetchRecords() {
+            console.log('++++++++++Getting Records++++++++++++')
+            console.log(`${user}`)
+            if(!user?.accountId) return;
+            console.log('User found')
+
+            try{
+                console.log(`Fetching records at /api/records/${user.accountId}`)
+                const response = await fetch(`/api/records/${user.accountId}`);
+                const data = await response.json();
+                setRecords(data);
+                setLoading(false);
+
+            }catch(err) {
+                console.error('ERROR FETCHING RECORDS: ',err)
+            }
+        }
+
+        fetchRecords();
+    }, [user?.accountId])
+
+    const wlRatio = records?.losses > 0 
+        ? (records.wins / records.losses).toFixed(2) 
+        : records?.wins > 0 ? records.wins.toFixed(2) : '0.00';
+
+    function formatTime(seconds) {
+        if (!seconds) return 'N/A';
+        const mins = Math.floor(seconds / 60);
+        const secs = Math.floor(seconds % 60);
+        return `${mins}:${secs.toString().padStart(2, '0')}`;
+    };
+
+    if (loading) return <div>Loading...</div>;
+    if (!records) return <div>No records found</div>;
+
     return (
         <main className="account-main">
 
             <section className="account-info">
-                <div className="info-header-container section-header" role="heading" aria-level={2}>
+                <div className="info-header-container section-header">
                     <span>Account Info</span>
                 </div>
 
@@ -11,24 +55,24 @@ export default function AccountInfo() {
                     <div className="info-display">
                         <div className="info-row">
                             <h3>Name</h3>
-                            <p><strong>John Doe</strong></p>
+                            <p><strong>{user?.name || 'John Doe'}</strong></p>
                         </div>
 
                         <div className="info-row">
                             <h3>Username</h3>
-                            <p><em>chessMaster42</em></p>
+                            <p><em>{user?.username || 'chessMaster42'}</em></p>
                         </div>
 
                         <div className="info-row">
                             <h3>Email</h3>
-                            <p>john.doe@example.com</p>
+                            <p>{user?.email || 'john.doe@example.com'}</p>
                         </div>
                     </div>
                 </div>
             </section>
 
             <section className="scores-container">
-                <div className="scores-header-container section-header alt" role="heading" aria-level={2}>
+                <div className="scores-header-container section-header alt">
                     <span>Scores</span>
                 </div>
 
@@ -49,22 +93,13 @@ export default function AccountInfo() {
 
                             <tbody>
                                 <tr>
-                                    <td>23</td>
-                                    <td>15</td>
-                                    <td>5</td>
-                                    <td>3</td>
-                                    <td>0.65</td>
-                                    <td>5:16</td>
-                                    <td>18</td>
-                                </tr>
-                                <tr>
-                                    <td>23</td>
-                                    <td>15</td>
-                                    <td>5</td>
-                                    <td>3</td>
-                                    <td>0.65</td>
-                                    <td>5:16</td>
-                                    <td>18</td>
+                                    <td>{records.num_matches_played}</td>
+                                    <td>{records.wins}</td>
+                                    <td>{records.losses}</td>
+                                    <td>{records.stalemates}</td>
+                                    <td>{wlRatio}</td>
+                                    <td>{formatTime(records.best_time)}</td>
+                                    <td>{records.fewest_num_moves_win || 'N/A'}</td>
                                 </tr>
                             </tbody>
                         </table>

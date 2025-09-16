@@ -2,7 +2,7 @@ import { Router } from 'express';
 const router = Router();
 import { getRecordByAccountId, updateRecord } from '../queries/records.js';
 import { getGameHistoryByAccountId, createGameHistory } from '../queries/history.js';
-import { getUserByUsername, getUserByEmail, createUser, findByEmail, findByUsername } from '../queries/users.js';
+import { getUserByUsername, getUserByEmail, createUser, findByEmail, findByUsername, getUserDetailsByUsername, getDetailsWithID } from '../queries/users.js';
 import jsonwebtoken from 'jsonwebtoken';
 const secret = process.env.SECRET;
 if(! secret ) {
@@ -47,7 +47,7 @@ router.post('/register', async (req, res, next) => {
         if( !nameRegex.test(name)){
             return res.status(400).json({ message: 'Name can only contain letters and be 2-30 characters.' });
         }
-        if (!email.includes('@') && email.length < 5 && email.length > 100) {
+        if (!email.includes('@') || email.length < 5 || email.length > 100) {
             return res.status(400).json({ message: 'Enter a valid email.' });
         }
         if( !passwordRegex.test(password)){
@@ -103,8 +103,16 @@ router.post('/login', async (req, res, next) => {
             secret,
             { expiresIn: '7d' }
         );
+
+        res.cookie("token", token, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === "production",
+            sameSite: "strict",
+            maxAge: 7 * 24 * 60 * 60 * 1000
+        });
+
         return res.status(200).json({ 
-            token,
+            //token,
             user: {
                 accountId: authenticatedUser.account_id, 
                 username: authenticatedUser.username, 
@@ -115,6 +123,47 @@ router.post('/login', async (req, res, next) => {
     } catch (error) {
         next(error);
     }
+});
+function authenticateCookie(req, res, next) {
+    const token = req.cookies?.token;
+    if (!token) return res.status(401).json({ message: 'Not authenticated' });
+
+    jsonwebtoken.verify(token, secret, (err, payload) => {
+        if (err) return res.status(403).json({ message: 'Invalid token' });
+        req.auth = payload; 
+        next();
+    });
+}
+
+router.get('/me', authenticateCookie, async (req, res, next) => {
+    try {
+
+        const user = await findByUsername({
+            username: req.auth.username
+        });
+
+        console.log(user)
+        if (!user) return res.status(404).json({ message: "User not found" });
+
+        const userDetails = await getDetailsWithID({account_id: user.account_id});
+        
+        res.json({
+            user: {
+                accountId: userDetails.account_id,
+                username: userDetails.username,
+                name: userDetails.name,
+                email: userDetails.email
+            }
+        });
+        } catch (e) {
+        next(e);
+    }
+});
+
+// --- LOGOUT: clear cookie ---
+router.post('/logout', (req, res) => {
+    res.clearCookie("token", { httpOnly: true, sameSite: "strict", secure: process.env.NODE_ENV === "production" });
+    res.status(204).end();
 });
 
 router.get('/records/:accountId', async (req, res, next) => {

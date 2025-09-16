@@ -24,6 +24,15 @@ const createUser = async ({ name, username, email, password }) => {
     const result = await client.query(SQL, params);
     return result.rows[0];
 }
+const getUserDetailsByUsername = async ({username}) => {
+    const SQL = `
+        SELECT account_id, name, username, email, verified, created_at
+        FROM user_accounts
+        WHERE username = $1;
+    `;
+    const response = await client.query(SQL, [username]);
+    return response.rows[0];
+}
 
 const getUserByUsername = async ({username, password}) => {
     
@@ -45,6 +54,15 @@ const getUserByUsername = async ({username, password}) => {
     } else {
         return "Incorrect Credentials";
     }
+}
+const getDetailsWithID = async ({account_id}) => {
+    const SQL = `
+        SELECT account_id, name, username, email, verified, created_at
+        FROM user_accounts
+        WHERE account_id = $1;
+    `;
+    const response = await client.query(SQL, [account_id]);
+    return response.rows[0];
 }
 
 const findByUsername = async ({username}) => {
@@ -92,5 +110,7 @@ export {
     getUserByUsername,
     getUserByEmail,
     findByEmail,
-    findByUsername
+    findByUsername,
+    getUserDetailsByUsername,
+    getDetailsWithID
 }

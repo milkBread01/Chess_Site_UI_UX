@@ -64,7 +64,7 @@ export function addGoldChecks(objGB, LUT, originColor, origin) {
     const out = { ...objGB };
     const enemyColor = originColor === "white" ? "black" : "white";
     const enemyKingSq = getKingSquare(LUT, enemyColor);
-    if (!enemyKingSq) return out; // no king found (shouldn't happen in normal play)
+    if (!enemyKingSq) return out; 
 
     // Consider any square that exists in list, Gold overrides.
     for (const dest of Object.keys(out)) {
@@ -140,7 +140,7 @@ function attackBishop(currentOrigin, LUT, enemyColor) {
     for (const [direction, moves] of Object.entries(theoMoves)) {
         for (const move of moves) {
             if (LUT[move]) {
-                // If we hit any piece, check if it's an enemy bishop
+                // if find any piece, check if it's an enemy bishop
                 if (LUT[move].type === "bishop" && LUT[move].color === enemyColor) {
                     return true;
                 }
@@ -158,7 +158,7 @@ function attackRook(currentOrigin, LUT, enemyColor) {
     for (const [direction, moves] of Object.entries(theoMoves)) {
         for (const move of moves) {
             if (LUT[move]) {
-                // If we hit any piece, check if it's an enemy rook
+                // if find any piece, check if it's an enemy rook
                 if (LUT[move].type === "rook" && LUT[move].color === enemyColor) {
                     return true;
                 }
@@ -176,7 +176,7 @@ function attackQueen(currentOrigin, LUT, enemyColor) {
     for (const [direction, moves] of Object.entries(theoMoves)) {
         for (const move of moves) {
             if (LUT[move]) {
-                // If we hit any piece, check if it's an enemy queen
+                // if find any piece, check if it's an enemy queen
                 if (LUT[move].type === "queen" && LUT[move].color === enemyColor) {
                     return true;
                 }

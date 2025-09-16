@@ -30,8 +30,8 @@ CREATE TABLE game_history (
 	white_player_name               VARCHAR(50), 
 	black_player_name               VARCHAR(50),
 	game_result                     VARCHAR(50) CHECK (game_result IN ('white_win', 'black_win', 'stalemate')),
-	white_time                      DOUBLE PRECISION,
-	black_time                      DOUBLE PRECISION,
+/* 	white_time                      DOUBLE PRECISION,
+	black_time                      DOUBLE PRECISION, */
 	moves                           TEXT NOT NULL,
 	created_at                      TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );

@@ -5,12 +5,11 @@ import { useNavigate } from "react-router-dom";
 
 export default function Header() {
   const [open, setOpen] = useState(false);
-  const { user } = useContext(UserContext);
+  const { user, setUser, logout } = useContext(UserContext);
   const navigate = useNavigate();
 
-  function handleLogout() {
-    setUser(null);
-    navigate("/login");
+  async function handleLogout() {
+    await logout()
   }
 
   return (
@@ -50,8 +49,9 @@ export default function Header() {
                         </>    
                     ) : (
                         <>
+                            <h3 >Hello {user?.name || 'John Doe'}</h3>
                             <a href="/account">Account Info</a>
-                            <button onClick={handleLogout}>Logout</button>
+                            <a onClick={handleLogout}>Logout</a>
                         </>
                     )}
                     

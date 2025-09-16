@@ -179,13 +179,12 @@ export function filterPawn(LUT, originColor, origin) {
     const originRC = stringToNumeric(origin);
     
     if (!originRC) {
-        console.error("Invalid origin:", origin);
+        //console.error("Invalid origin:", origin);
         return makeB(valid, enemySquares);
     }
 
-    console.log(`Grid Pos: ${origin} \n row: ${originRC[0]} \n col: ${originRC[1]}`);
+    //console.log(`Grid Pos: ${origin} \n row: ${originRC[0]} \n col: ${originRC[1]}`);
 
-    // Helper function to safely create position strings
     const safeCreatePosition = (row, col) => {
         if (row < 0 || row > 7 || col < 0 || col > 7) {
             return null;

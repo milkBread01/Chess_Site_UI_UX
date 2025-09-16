@@ -8,6 +8,8 @@ export default function Login() {
     //const [user, setUser] = useState(null)
     const { user, setUser } = useContext(UserContext);
 
+    const { login } = useContext(UserContext); 
+
     const [formData, setFormData] = useState({
         username: "",
         password: ""
@@ -51,7 +53,7 @@ export default function Login() {
         setSubmitting(true);
 
         try{
-            const res = await fetch('/api/login', {
+            /* const res = await fetch('/api/login', {
                 method: "POST",
                 headers: {"Content-Type": "application/json"},
                 body: JSON.stringify({
@@ -69,7 +71,10 @@ export default function Login() {
 
             const data = await res.json();
             setUser(data.user);
-            navigate("/home")
+            navigate("/home") */
+            await login(formData.username, formData.password);
+            navigate("/home");
+            
         }catch(er){
             setReturnErrors("Network error occurred")
             setSubmitting(false)
