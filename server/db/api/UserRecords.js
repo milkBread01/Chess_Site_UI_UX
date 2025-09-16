@@ -217,11 +217,28 @@ router.get('/records/:accountId', async (req, res, next) => {
     const { accountId } = req.params;
     try {
         const records = await getRecordByAccountId(accountId);
-        res.send(records);
+        
+        // If no record exists, create a default one or return default values
+        if (!records) {
+            const defaultRecord = {
+                record_id: null,
+                account_id: parseInt(accountId),
+                num_matches_played: 0,
+                wins: 0,
+                losses: 0,
+                stalemates: 0,
+                best_time: null,
+                fewest_num_moves_win: null
+            };
+            return res.json(defaultRecord);
+        }
+        
+        res.json(records);
     } catch (error) {
         next(error);
     }
 });
+
 router.put('/records', async (req, res, next) => {
     const recordUpdate = req.body;
     try {
