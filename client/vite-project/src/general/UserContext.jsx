@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback, createContext } from "react";
 
 export const UserContext = createContext();
+const API_BASE = "https://learn-chess-web.netlify.app/";
 
 export function UserProvider({ children }) {
   const [user, setUser] = useState(null);
@@ -11,24 +12,26 @@ export function UserProvider({ children }) {
     setLoading(true);
     setError(null);
     try {
-      console.log("Attempting to fetch /api/me...");
-      const res = await fetch("/api/me", { credentials: "include" });
-      console.log("Response status:", res.status);
-      console.log("Response headers:", [...res.headers.entries()]);
+      //console.log("Attempting to fetch /api/me...");
+      //const res = await fetch("/api/me", { credentials: "include" });
+      const res = await fetch(`${API_BASE}/api/me`, { credentials: "include" });
+
+      //console.log("Response status:", res.status);
+      //console.log("Response headers:", [...res.headers.entries()]);
       
       if (res.ok) {
         const data = await res.json();
-        console.log("Response data:", data);
+        //console.log("Response data:", data);
         setUser(data.user ?? null);
         
       } else {
-        console.log("Response not ok, status:", res.status);
+        //console.log("Response not ok, status:", res.status);
         const errorText = await res.text();
-        console.log("Error response body:", errorText);
+        //console.log("Error response body:", errorText);
         setUser(null);
       }
     } catch (e) {
-      console.error("Fetch error:", e);
+      //console.error("Fetch error:", e);
       setUser(null);
       setError("Failed to load session");
     } finally {
