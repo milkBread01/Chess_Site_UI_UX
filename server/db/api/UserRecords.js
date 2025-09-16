@@ -111,13 +111,18 @@ router.post('/login', async (req, res, next) => {
             { expiresIn: '7d' }
         );
 
-        res.cookie("token", token, {
+        // Updated cookie settings for cross-origin
+        const cookieOptions = {
             httpOnly: true,
+            maxAge: 7 * 24 * 60 * 60 * 1000,
             secure: process.env.NODE_ENV === "production",
-            sameSite: "strict",
-            maxAge: 7 * 24 * 60 * 60 * 1000
-        });
+            sameSite: process.env.NODE_ENV === "production" ? "none" : "lax"
+        };
 
+        console.log("Setting cookie with options:", cookieOptions);
+        res.cookie("token", token, cookieOptions);
+
+        console.log("Login successful, sending response");
         return res.status(200).json({ 
             user: {
                 accountId: authenticatedUser.account_id, 
