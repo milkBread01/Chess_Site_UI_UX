@@ -14,8 +14,8 @@ export function UserProvider({ children }) {
     setLoading(true);
     setError(null);
     try {
-      console.log("Fetching from:", `${API_BASE}/api/me`);
-      const res = await fetch(`${API_BASE}/api/me`, { credentials: "include" });
+      console.log("Fetching from:", `${API_BASE}api/me`);
+      const res = await fetch(`${API_BASE}api/me`, { credentials: "include" });
 
       if (res.ok) {
         const data = await res.json();
@@ -42,7 +42,7 @@ export function UserProvider({ children }) {
   useEffect(() => { fetchMe(); }, [fetchMe]);
 
   const login = async (username, password) => {
-    const res = await fetch(`${API_BASE}/api/login`, {
+    const res = await fetch(`${API_BASE}api/login`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       credentials: "include",
@@ -56,7 +56,7 @@ export function UserProvider({ children }) {
   };
 
   const logout = async () => {
-    await fetch(`${API_BASE}/api/logout`, { 
+    await fetch(`${API_BASE}api/logout`, { 
       method: "POST", 
       credentials: "include" 
     });
