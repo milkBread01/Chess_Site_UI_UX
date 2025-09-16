@@ -1,4 +1,4 @@
-import Hero from "./components/hero";
+import Hero from "./components/Hero";
 import heroImage from "../assets/hero1.jpg";
 
 const heroTitle = "About This Site";

@@ -1,4 +1,4 @@
-import Hero from "./components/hero";
+import Hero from "./components/Hero";
 import heroImage from "../assets/hero2.jpg";
 import CTA from "./components/CTA_button_section";
 const heroTitle = "Learn Chess";

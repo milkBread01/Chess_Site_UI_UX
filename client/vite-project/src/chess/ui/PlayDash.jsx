@@ -1,5 +1,5 @@
 import { useState } from "react";
-import Hero from "../../general/components/hero";
+import Hero from "../../general/components/Hero";
 import heroImage from "../../assets/hero3.jpg";
 import StartGamePop from "./StartGamePop";
 const heroTitle = "Play Chess";
