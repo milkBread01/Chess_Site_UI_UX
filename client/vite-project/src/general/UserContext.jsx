@@ -1,39 +1,39 @@
 import { useState, useEffect, useCallback, createContext } from "react";
 
 export const UserContext = createContext();
-const API_BASE = "https://learn-chess-web.netlify.app/";
+
+// Configure API base URL from environment variables
+const API_BASE = import.meta.env.VITE_API_URL || "";
 
 export function UserProvider({ children }) {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError]     = useState(null);
+  const [error, setError] = useState(null);
 
   const fetchMe = useCallback(async () => {
     setLoading(true);
     setError(null);
     try {
-      //console.log("Attempting to fetch /api/me...");
-      //const res = await fetch("/api/me", { credentials: "include" });
+      console.log("Fetching from:", `${API_BASE}/api/me`);
       const res = await fetch(`${API_BASE}/api/me`, { credentials: "include" });
 
-      //console.log("Response status:", res.status);
-      //console.log("Response headers:", [...res.headers.entries()]);
-      
       if (res.ok) {
         const data = await res.json();
-        //console.log("Response data:", data);
         setUser(data.user ?? null);
-        
-      } else {
-        //console.log("Response not ok, status:", res.status);
-        const errorText = await res.text();
-        //console.log("Error response body:", errorText);
+      } else if (res.status === 401) {
+        // Expected when not logged in - not an error
         setUser(null);
+      } else {
+        console.error("Unexpected response status:", res.status);
+        const errorText = await res.text();
+        console.error("Error response:", errorText);
+        setUser(null);
+        setError(`Server error: ${res.status}`);
       }
     } catch (e) {
-      //console.error("Fetch error:", e);
+      console.error("Network error:", e);
       setUser(null);
-      setError("Failed to load session");
+      setError("Failed to connect to server");
     } finally {
       setLoading(false);
     }
@@ -42,7 +42,7 @@ export function UserProvider({ children }) {
   useEffect(() => { fetchMe(); }, [fetchMe]);
 
   const login = async (username, password) => {
-    const res = await fetch("/api/login", {
+    const res = await fetch(`${API_BASE}/api/login`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       credentials: "include",
@@ -56,7 +56,10 @@ export function UserProvider({ children }) {
   };
 
   const logout = async () => {
-    await fetch("/api/logout", { method: "POST", credentials: "include" });
+    await fetch(`${API_BASE}/api/logout`, { 
+      method: "POST", 
+      credentials: "include" 
+    });
     setUser(null);
   };
 

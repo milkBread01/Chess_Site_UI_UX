@@ -124,12 +124,27 @@ router.post('/login', async (req, res, next) => {
         next(error);
     }
 });
-function authenticateCookie(req, res, next) {
-    const token = req.cookies?.token;
-    if (!token) return res.status(401).json({ message: 'Not authenticated' });
 
+function authenticateCookie(req, res, next) {
+    console.log('=== authenticateCookie called ===');
+    console.log('All cookies:', req.cookies);
+    
+    const token = req.cookies?.token;
+    console.log('Token from cookie:', token ? 'Present' : 'Missing');
+    
+    if (!token) {
+        console.log('No token found in cookies');
+        return res.status(401).json({ message: 'Not authenticated' });
+    }
+
+    console.log('Verifying token...');
     jsonwebtoken.verify(token, secret, (err, payload) => {
-        if (err) return res.status(403).json({ message: 'Invalid token' });
+        if (err) {
+            console.error('Token verification error:', err.message);
+            return res.status(403).json({ message: 'Invalid token' });
+        }
+        
+        console.log('Token verified successfully. Payload:', payload);
         req.auth = payload; 
         next();
     });
@@ -137,25 +152,45 @@ function authenticateCookie(req, res, next) {
 
 router.get('/me', authenticateCookie, async (req, res, next) => {
     try {
+        console.log('=== /me endpoint called ===');
+        console.log('req.auth:', req.auth);
+        console.log('Username from token:', req.auth?.username);
 
+        if (!req.auth?.username) {
+            console.log('No username in auth payload');
+            return res.status(400).json({ message: "No username in token" });
+        }
+
+        console.log('Calling findByUsername...');
         const user = await findByUsername({
             username: req.auth.username
         });
 
-        console.log(user)
-        if (!user) return res.status(404).json({ message: "User not found" });
+        console.log('findByUsername result:', user);
+        if (!user) {
+            console.log('User not found in database');
+            return res.status(404).json({ message: "User not found" });
+        }
 
+        console.log('Calling getDetailsWithID with account_id:', user.account_id);
         const userDetails = await getDetailsWithID({account_id: user.account_id});
+        console.log('getDetailsWithID result:', userDetails);
         
-        res.json({
+        const response = {
             user: {
                 accountId: userDetails.account_id,
                 username: userDetails.username,
                 name: userDetails.name,
                 email: userDetails.email
             }
-        });
-        } catch (e) {
+        };
+        
+        console.log('Sending response:', response);
+        res.json(response);
+        
+    } catch (e) {
+        console.error('Error in /me endpoint:', e);
+        console.error('Error stack:', e.stack);
         next(e);
     }
 });
