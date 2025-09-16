@@ -45,6 +45,12 @@ const getUserByUsername = async ({username, password}) => {
 
     const response = await client.query(SQL, [username]);
     const user = response.rows[0];
+
+    if (!user) {
+        return "Incorrect Credentials";
+    }
+
+    
     console.log('Passowrd',password)
     console.log('hash',user.password)
     const verify = await bcrypt.compare(password, user.password_hash);
