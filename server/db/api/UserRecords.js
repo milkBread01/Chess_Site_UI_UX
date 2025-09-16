@@ -72,6 +72,7 @@ router.post('/register', async (req, res, next) => {
 router.post('/login', async (req, res, next) => {
     try {
         const { username, password } = req.body;
+        console.log("Login attempt for username:", username);
 
         if (!username || !password) {
             return res.status(400).send({ message: 'Username and password are required' });
@@ -85,16 +86,22 @@ router.post('/login', async (req, res, next) => {
 
         const user = await findByUsername({username}); // returns full user record or null
         console.log("username given",username)
+        console.log("User found:", user); // Moved this after user is defined
 
-        console.log("User found:", user);
         if (!user) {
+            console.log("User not found in database");
             return res.status(401).json({ message: 'Invalid credentials' });
         }
 
+        console.log("Calling getUserByUsername for authentication...");
         const authenticatedUser = await getUserByUsername({ username, password });
+        console.log("getUserByUsername result:", authenticatedUser);
+
         if (authenticatedUser === "Incorrect Credentials") {
+            console.log("Password verification failed");
             return res.status(401).json({ message: 'Invalid credentials' });
         }
+
         const token = jsonwebtoken.sign(
             {
                 accountId: authenticatedUser.account_id,
@@ -112,7 +119,6 @@ router.post('/login', async (req, res, next) => {
         });
 
         return res.status(200).json({ 
-            //token,
             user: {
                 accountId: authenticatedUser.account_id, 
                 username: authenticatedUser.username, 
@@ -121,6 +127,7 @@ router.post('/login', async (req, res, next) => {
             } 
         });
     } catch (error) {
+        console.error("Login error:", error);
         next(error);
     }
 });

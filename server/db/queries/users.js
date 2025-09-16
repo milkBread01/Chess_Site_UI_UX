@@ -47,7 +47,7 @@ const getUserByUsername = async ({username, password}) => {
     const user = response.rows[0];
     console.log('Passowrd',password)
     console.log('hash',user.password)
-    const verify = bcrypt.compare(password, user.password_hash);
+    const verify = await bcrypt.compare(password, user.password_hash);
     
     if(verify){
         return user;
@@ -97,7 +97,7 @@ const getUserByEmail = async ({email, password}) => {
     `;
     const response = await client.query(SQL, [email]);
     const user = response.rows[0];
-    const verify = bcrypt.compare(password, user.password_hash);
+    const verify = await bcrypt.compare(password, user.password_hash);
     if(verify){
         return user;
     } else {
