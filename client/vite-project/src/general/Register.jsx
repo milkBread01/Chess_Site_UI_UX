@@ -60,7 +60,7 @@ export default function Register() {
         setSubmitting(true);
 
         try{
-            const res = await fetch(`${API_BASE}/api/register`, {
+            const res = await fetch(`${API_BASE}api/register`, {
                 method: "POST",
                 headers: {"Content-Type": "application/json"},
                 body: JSON.stringify({
@@ -80,6 +80,7 @@ export default function Register() {
             navigate("/login")
 
         }catch(er){
+            console.error('Registration error:', er);
             setReturnErrors("Network error occurred")
             setSubmitting(false)
         }
