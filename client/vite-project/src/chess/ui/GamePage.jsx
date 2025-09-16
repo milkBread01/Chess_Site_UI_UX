@@ -4,7 +4,7 @@ import { UserContext } from "../../general/UserContext"
 
 import GamePeripheralsMenu from "./GamePeripheralsMenu";
 import Board from "./Board";
-import CapturedPieces from "./capturedPieces";
+import CapturedPieces from "./CapturedPieces";
 /* Manages total time and player time */
 import BeginGameButton from "./BeginGameButton";
 import MoveHistory from './MoveHistory';
