@@ -21,7 +21,7 @@ import { getLegalMovesForPiece } from '../pieces/CheckCheck';
 import { stringToNumeric } from '../pieces/Utils';
 import PromotionMenu from './PromotionMenu';
 
-const [gameStartTime, setGameStartTime] = useState(null);
+
 
 let uid = 0;
 const basePath = "/chess/assets/";
@@ -75,6 +75,8 @@ export default function GamePage() {
 
     const [showStart, setShowStart] = useState(true);
     const [showMenu, setShowMenu] = useState(true);
+
+    const [gameStartTime, setGameStartTime] = useState(null);
     
     const [pendingPromotion, setPendingPromotion] = useState(null);
     let showPromotionMenu = !!pendingPromotion;
