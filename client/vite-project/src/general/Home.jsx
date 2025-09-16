@@ -37,7 +37,6 @@ export default function Home() {
                             <div className = "home-button-container">
                                 <a className="button-type-1" href="/play">Play Chess</a>
                                 <a className="button-type-1" href="/learn">Learn More</a>
-                                <a className="button-type-1" href="/misc">Misc</a>
                             </div>
                         </div>
                     </div>
