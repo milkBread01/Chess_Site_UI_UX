@@ -18,7 +18,7 @@ function generateName () {
 
 // generate passwords
 function generatePassword() {
-    const basePassword = faker.password({ length: 8, memorable: true, pattern: /[A-Za-z0-9]{8}/ });
+    const basePassword = faker.internet.password({ length: 8, memorable: true, pattern: /[A-Za-z0-9]/ });
     const specialChar = "$";
     return basePassword + specialChar;
 };

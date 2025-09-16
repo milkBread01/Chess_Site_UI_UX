@@ -5,7 +5,10 @@ import pg from "pg";
     process.env.DATABASE_URL
 ); */
 const client = new pg.Client({
-    connectionString: process.env.DATABASE_URL
+    connectionString: process.env.DATABASE_URL,
+    ssl: {
+        rejectUnauthorized: false
+    }
 });
 
 export default client;
