@@ -267,20 +267,20 @@ function generateChessGameMoves () {
     return JSON.stringify(moves);
 };
 
-// generate usernames that match the regex
+// generate usernames
 function generateUsername () {
     const username = faker.person.firstName().toLowerCase() + faker.number.int({ min: 100, max: 999 }).toString();
     return username.length >= 5 ? username.substring(0, 24) : username.padEnd(5, '0');
 };
 
-// generate names that match the regex
+// generate names 
 function generateName () {
-    return faker.person.firstName().replace(/[^A-Za-z]/g, '');
+    return faker.person.firstName()
 };
 
-// generate passwords that match the regex
+// generate passwords
 function generatePassword() {
-    const basePassword = faker.internet.password(12, false);
+    const basePassword = faker.password({ length: 8, memorable: true, pattern: /[A-Za-z0-9]{8}/ });
     const specialChar = "$";
     return basePassword + specialChar;
 };
@@ -379,8 +379,8 @@ const seed = async () => {
                     white_player_name,
                     black_player_name,
                     game_result,
-                    white_time,
-                    black_time,
+/*                     white_time,
+                    black_time, */
                     moves
                 ]);
             }

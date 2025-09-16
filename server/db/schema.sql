@@ -6,7 +6,7 @@ DROP TABLE IF EXISTS user_accounts CASCADE;
 CREATE TABLE user_accounts (
 	account_id        INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
 	name              TEXT NOT NULL,
-	username          VARCHAR(150) NOT NULL UNIQUE,
+	username          TEXT NOT NULL UNIQUE,
 	email             VARCHAR(255) NOT NULL UNIQUE,
 	password_hash     TEXT NOT NULL,
 	verified          BOOLEAN NOT NULL DEFAULT FALSE,
@@ -27,9 +27,9 @@ CREATE TABLE user_records (
 CREATE TABLE game_history (
 	game_id                         INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
 	account_owner_id                INTEGER NOT NULL REFERENCES user_accounts(account_id) ON DELETE CASCADE,
-	white_player_name               VARCHAR(50), 
-	black_player_name               VARCHAR(50),
-	game_result                     VARCHAR(50) CHECK (game_result IN ('white_win', 'black_win', 'stalemate')),
+	white_player_name               TEXT, 
+	black_player_name               TEXT,
+	game_result                     VARCHAR(150) CHECK (game_result IN ('white_win', 'black_win', 'stalemate')),
 /* 	white_time                      DOUBLE PRECISION,
 	black_time                      DOUBLE PRECISION, */
 	moves                           TEXT NOT NULL,
