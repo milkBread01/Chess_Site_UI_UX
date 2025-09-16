@@ -1,28 +1,45 @@
 import { UserContext } from "./UserContext";
 import { useContext, useState, useEffect } from "react";
 
+const API_BASE = import.meta.env.VITE_API_URL || "";
+
 export default function AccountInfo() {
 
     const [records, setRecords] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
     const { user } = useContext(UserContext);
 
     useEffect(() => {
         async function fetchRecords() {
             console.log('++++++++++Getting Records++++++++++++')
-            console.log(`${user}`)
-            if(!user?.accountId) return;
-            console.log('User found')
+            console.log('User:', user)
+            if(!user?.accountId) {
+                setLoading(false);
+                return;
+            }
+            console.log('User found, accountId:', user.accountId)
 
             try{
-                console.log(`Fetching records at /api/records/${user.accountId}`)
-                const response = await fetch(`/api/records/${user.accountId}`);
+                const url = `${API_BASE}/api/records/${user.accountId}`;
+                console.log(`Fetching records at ${url}`)
+                const response = await fetch(url, {
+                    credentials: 'include' // Include cookies
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
                 const data = await response.json();
+                console.log('Records data received:', data);
                 setRecords(data);
                 setLoading(false);
 
-            }catch(err) {
-                console.error('ERROR FETCHING RECORDS: ',err)
+            } catch(err) {
+                console.error('ERROR FETCHING RECORDS: ', err);
+                setError(err.message);
+                setLoading(false);
             }
         }
 
@@ -41,6 +58,7 @@ export default function AccountInfo() {
     };
 
     if (loading) return <div>Loading...</div>;
+    if (error) return <div>Error loading records: {error}</div>;
     if (!records) return <div>No records found</div>;
 
     return (
