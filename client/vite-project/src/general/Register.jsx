@@ -1,5 +1,6 @@
 import { useState } from "react"
 import { useNavigate } from "react-router-dom";
+const API_BASE = import.meta.env.VITE_API_URL || "";
 
 export default function Register() {
     const navigate = useNavigate();
@@ -21,7 +22,7 @@ export default function Register() {
         const nameRegex = /^[A-Za-z]{2,30}$/;
         const passwordRegex = /^(?=.*[!@#$%^&*(),.?":{}|<>]).{8,128}$/;
 
-        if(!form.name.trim() || nameRegex.test(form.name)){
+        if(!form.name.trim() || !nameRegex.test(form.name)){
             errors.name = "Please Enter Your Name"
         }
         if(!form.username || !usernameRegex.test(form.username)){
@@ -54,12 +55,12 @@ export default function Register() {
         const err = validateForm();
         setFormErros(err);
         console.log(err)
-        if(!err) return;
+        if(Object.keys(err).length > 0) return;
 
         setSubmitting(true);
 
         try{
-            const res = await fetch('/api/register', {
+            const res = await fetch(`${API_BASE}/api/register`, {
                 method: "POST",
                 headers: {"Content-Type": "application/json"},
                 body: JSON.stringify({
