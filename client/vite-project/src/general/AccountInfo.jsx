@@ -21,7 +21,7 @@ export default function AccountInfo() {
             console.log('User found, accountId:', user.accountId)
 
             try{
-                const url = `${API_BASE}/api/records/${user.accountId}`;
+                const url = `${API_BASE}api/records/${user.accountId}`;
                 console.log(`Fetching records at ${url}`)
                 const response = await fetch(url, {
                     credentials: 'include' // Include cookies

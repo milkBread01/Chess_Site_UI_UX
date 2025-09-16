@@ -21,7 +21,7 @@ import { getLegalMovesForPiece } from '../pieces/CheckCheck';
 import { stringToNumeric } from '../pieces/Utils';
 import PromotionMenu from './PromotionMenu';
 
-
+const API_BASE = import.meta.env.VITE_API_URL || "";
 
 let uid = 0;
 const basePath = "/chess/assets/";
@@ -454,12 +454,12 @@ export default function GamePage() {
                            winner === "white" ? "white_win" : "black_win",
                 moves: JSON.stringify({
                     initial_board: handleInitPos(),
-                    move_history: moveHistory,
+                    move_history: numMoves,
                     final_board: chessBoard
                 })
             }
 
-            const historyResponse = await fetch('/api/history', {
+            const historyResponse = await fetch(`${API_BASE}api/history`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -481,7 +481,7 @@ export default function GamePage() {
                 numMoves: numMoves
             };
 
-            const recordResponse = await fetch('/api/records', {
+            const recordResponse = await fetch(`${API_BASE}api/records`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
