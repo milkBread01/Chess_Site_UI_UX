@@ -1,8 +1,7 @@
 /* Store the game information and pass to GamePage */
 
 import { useNavigate } from "react-router-dom";
-import React, { createContext, useState } from "react";
-
+import { createContext, useState } from "react";
 
 export default function StartGamePop({showForm}) {
     if(!showForm) return null;
