@@ -3,7 +3,6 @@ import client from './client.js';
 import { faker } from '@faker-js/faker';
 import bcrypt from 'bcryptjs';
 console.log('DATABASE_URL:', process.env.DATABASE_URL);
-// Helper function to generate chess board state as JSON
 
 // generate usernames
 function generateUsername () {

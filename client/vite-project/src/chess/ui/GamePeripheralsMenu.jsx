@@ -13,7 +13,7 @@ export default function GamePeripheralsMenu({
     playerTime
 }) {
 
-    const perTurn = playerTime || 300; // default to 120 seconds if not provided
+    const perTurn = playerTime || 300;
     return(
         <>
             <div className = "peripherals-wrapper">

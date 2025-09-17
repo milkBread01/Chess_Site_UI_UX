@@ -31,14 +31,15 @@ export function getKingPosition(LUT, color) {
     return null;
 }
 
-/* Get all legal moves for ANY piece of the given color (not just king!) */
+/* Get all legal moves for ANY piece of the given color not just king */
 export function getAllLegalMoves(LUT, pieceColor) {
     const legalMoves = [];
 
     // iterate through ALL pieces of the given color
     for (const square in LUT) {
         const piece = LUT[square];
-        // FIXED: Check piece.color, not piece !== pieceColor
+
+        // check piece.color
         if (!piece || piece.color !== pieceColor) continue;
 
         // get all possible moves for THIS piece (any piece, not just king)

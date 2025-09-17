@@ -12,17 +12,17 @@ export default function AccountInfo() {
 
     useEffect(() => {
         async function fetchRecords() {
-            console.log('++++++++++Getting Records++++++++++++')
-            console.log('User:', user)
+            //console.log('++++++++++Getting Records++++++++++++')
+            //console.log('User:', user)
             if(!user?.accountId) {
                 setLoading(false);
                 return;
             }
-            console.log('User found, accountId:', user.accountId)
+            //console.log('User found, accountId:', user.accountId)
 
             try{
                 const url = `${API_BASE}api/records/${user.accountId}`;
-                console.log(`Fetching records at ${url}`)
+                //console.log(`Fetching records at ${url}`)
                 const response = await fetch(url, {
                     credentials: 'include' // Include cookies
                 });
@@ -32,12 +32,12 @@ export default function AccountInfo() {
                 }
                 
                 const data = await response.json();
-                console.log('Records data received:', data);
+                //console.log('Records data received:', data);
                 setRecords(data);
                 setLoading(false);
 
             } catch(err) {
-                console.error('ERROR FETCHING RECORDS: ', err);
+                //console.error('ERROR FETCHING RECORDS: ', err);
                 setError(err.message);
                 setLoading(false);
             }

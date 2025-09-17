@@ -123,7 +123,7 @@ function attackKnight(currentOrigin, LUT, enemyColor) {
     for (const [direction, moves] of Object.entries(theoMoves)) {
         for (const move of moves) {
             if (LUT[move]) {
-                // Knight moves don't have blocking - check directly for enemy knight
+                // Knight moves don't have blocking 
                 if (LUT[move].type === "knight" && LUT[move].color === enemyColor) {
                     return true;
                 }

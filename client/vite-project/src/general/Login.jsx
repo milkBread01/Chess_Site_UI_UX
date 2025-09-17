@@ -47,31 +47,13 @@ export default function Login() {
         setReturnErrors("");
         const err = validateForm();
         setFormErros(err);
-        console.log(err)
+        //console.log(err)
         if (Object.keys(err).length > 0) return;
 
         setSubmitting(true);
 
         try{
-            /* const res = await fetch('/api/login', {
-                method: "POST",
-                headers: {"Content-Type": "application/json"},
-                body: JSON.stringify({
-                    username: formData.username,
-                    password: formData.password
-                })
-            });
 
-            if(!res.ok){
-                const errorData = await res.json();
-                setReturnErrors(errorData.message || "Registration failed");
-                setSubmitting(false);
-                return;
-            }
-
-            const data = await res.json();
-            setUser(data.user);
-            navigate("/home") */
             await login(formData.username, formData.password);
             navigate("/home");
             

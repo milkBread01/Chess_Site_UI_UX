@@ -115,7 +115,6 @@ export default function StartGamePop({showForm}) {
                             </div>
                         </div>
 
-                        {/* Submit */}
                         <div className="form-group">
                             <button type="submit" className="sg-submit">
                                 Start Game

@@ -68,11 +68,6 @@ export default function GamePage() {
     {guestName: "Guest", timePerTurn: 300, loggedInColor: "white"};
     const guestColor = loggedInColor === "white" ? "black" : "white";
 
-    /* if (!state || !state.gameInfo) {
-        navigate('/play'); // Redirect to /play if no state
-        return null; // Prevent rendering
-    } */
-
     const [showStart, setShowStart] = useState(true);
     const [showMenu, setShowMenu] = useState(true);
 
@@ -86,7 +81,7 @@ export default function GamePage() {
     const player1Name = user?.username;
 
     const [chessBoard, setChessBoard] = useState(null); /* LUT for pieces */
-    const [selected, setSelected] = useState(null); /* contains grid pos of selected grid */
+    const [selected, setSelected] = useState(null); /* contains grid pos of selected piece */
     const [highlights, setHighlights] = useState({}); /* contains highlights */
     const [moveHistory, setMoveHistory] = useState([]); /* contains move history */
 
@@ -313,10 +308,10 @@ export default function GamePage() {
         //console.log(chessBoard)
 
         if(gameStates.promotion) {
-            console.log("============================== SETTING PROMOTION ==============================")
-            console.log('GameStates Promotion: ',gameStates.promotion)
+            //console.log("============================== SETTING PROMOTION ==============================")
+            //console.log('GameStates Promotion: ',gameStates.promotion)
             setPendingPromotion(gameStates.promotion)
-            console.log('PMS: ',showPromotionMenu)
+            //console.log('PMS: ',showPromotionMenu)
             return;
         }
 
@@ -386,6 +381,7 @@ export default function GamePage() {
         if (status.checkmate) {
             alert(`Checkmate! ${activePlayer} loses.`)
             saveGame2DB("checkmate", winner)
+            
         } else if (status.stalemate) {
             alert("Stalemate! Game is a draw.")
             saveGame2DB("stalemate")

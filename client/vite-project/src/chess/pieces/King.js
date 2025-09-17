@@ -22,19 +22,19 @@ export function isKingAttacking(origin){
     const moveList = [
         [-2,-2], // up left
         [-2,-1], // ULR
-        [-2,0],
+        [-2,0],  // up
         [-2,+1], // ULR
         [-2,+2], // up right
         [-1,+2], // RUR
-        [0,+2],
+        [0,+2],  // right
         [+1,+2], // RDR
         [+2,+2], // down right
         [+2,+1], // DLR
-        [+2,0],
+        [+2,0],  // down
         [+2,-1], // DLR
         [+2,-2], // down left
         [+1,-2], // LDR
-        [0,-2],
+        [0,-2],  // left
         [-1,-2]  // LUR
     ];
     for (let m = 0; m < moveList.length; m++) {

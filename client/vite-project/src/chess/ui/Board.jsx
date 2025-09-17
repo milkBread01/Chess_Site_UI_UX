@@ -2,7 +2,14 @@ import { useEffect } from 'react';
 import TopBoardLabels from './TopBoardLabels';
 import BottomBoardLabels from './BottomBoardLabels';
 
-export default function Board({ pieces, onSquareClick, selectedSquare, highlights }) {
+export default function Board({
+        pieces, // LUT 
+        onSquareClick, // grid click handle event  
+        selectedSquare, // Selected grid position
+        highlights  // piece Highlights
+
+    }) {
+
     const files = ["a","b","c","d","e","f","g","h"];
     const ranks = [8,7,6,5,4,3,2,1];
 

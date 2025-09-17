@@ -1,7 +1,6 @@
 import CTA from "./components/CTA_button_section";
 import image1 from "../assets/chess-4794265_1280.jpg";
 import image2 from "../assets/strategy-1080528_1280.jpg";
-//const image1 = "../assets/chess-4794265_1280.jpg"
 
 export default function Home() {
     const cardNames = ["pawn", "rook", "knight", "bishop", "queen", "king"];

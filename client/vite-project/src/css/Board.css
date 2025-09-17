@@ -1,3 +1,24 @@
+:root {
+    --board-size: min(90vw, 90vh, 800px);
+    --square-size: calc((var(--board-size) - 2rem) / 11.6);
+    --gap: 0.4rem;
+    --label-size: clamp(0.8rem, 2vw, 1.1rem);
+    --light: #f5f1e6;
+    --dark: #d1b792;
+    --blue: #5b93ee;
+    --green: #3fcf497d;
+    --red: #ef4444;
+    --gold: #e3ff42;
+    --purple: #a969f1;
+    --label-color: #333;
+    --boardBackground: #B9D9EB;
+    --pageBackground: #353E43;
+    --border: 0.2rem;
+    --radius: 1rem;
+    --shadow: 0 0.5rem 1.25rem rgba(0,0,0,0.12);
+    --peripheralsMenu: #628699ba;
+}
+
 .board-wrapper {
     width: auto;
     height: auto;

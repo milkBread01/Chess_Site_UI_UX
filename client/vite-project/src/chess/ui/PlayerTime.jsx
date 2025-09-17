@@ -9,7 +9,7 @@ export default function PlayerTime({
     advanceTurn,
     playerTimePerTurn
 }) {
-    const PT = playerTimePerTurn || 300; // default to 120 seconds if not provided
+    const PT = playerTimePerTurn || 300;
     const [playerTime, setPlayerTime] = useState(PT);
     const intervalRef = useRef(null);
     const isRunning = playerTimeRunning && activePlayer === id;

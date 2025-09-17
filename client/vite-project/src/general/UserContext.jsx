@@ -2,7 +2,6 @@ import { useState, useEffect, useCallback, createContext } from "react";
 
 export const UserContext = createContext();
 
-// Configure API base URL from environment variables
 const API_BASE = import.meta.env.VITE_API_URL || "";
 
 export function UserProvider({ children }) {
@@ -14,24 +13,28 @@ export function UserProvider({ children }) {
     setLoading(true);
     setError(null);
     try {
-      console.log("Fetching from:", `${API_BASE}api/me`);
-      const res = await fetch(`${API_BASE}api/me`, { credentials: "include" });
+      //console.log("Fetching from:", `${API_BASE}api/me`);
+      const res = await fetch(`${API_BASE}api/me`, 
+        { credentials: "include" }
+      );
 
       if (res.ok) {
+
         const data = await res.json();
         setUser(data.user ?? null);
+
       } else if (res.status === 401) {
-        // Expected when not logged in - not an error
+
         setUser(null);
+
       } else {
-        console.error("Unexpected response status:", res.status);
+
         const errorText = await res.text();
-        console.error("Error response:", errorText);
         setUser(null);
         setError(`Server error: ${res.status}`);
       }
     } catch (e) {
-      console.error("Network error:", e);
+      //console.error("Network error:", e);
       setUser(null);
       setError("Failed to connect to server");
     } finally {

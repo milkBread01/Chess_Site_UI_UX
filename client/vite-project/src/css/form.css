@@ -1,12 +1,13 @@
+
+
 :root{
-    --bg-main: #D9D3C0;   /* main background */
     --ink:     #353E43;   /* text & borders */
     --accent:  #B9D9EB;   /* buttons, headings, accents */
     --panel:   #F7F4EA;   /* light panel surface */
 }
 
 .form-main {
-    background: var(--bg-main);
+    background: #D9D3C0;
     min-height: 100vh;
     display: grid;
     place-items: center;

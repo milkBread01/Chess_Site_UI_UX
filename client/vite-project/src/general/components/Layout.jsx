@@ -21,6 +21,7 @@ import '../../css/pop-up.css';
 import '../../css/promotion-menu.css';
 import '../../css/start-game-form.css';
 import '../../css/learn-page.css';
+import '../../css/about-us.css';
 
 export default function Layout() {
   return (

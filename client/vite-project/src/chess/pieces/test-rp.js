@@ -65,9 +65,6 @@ function getTheoreticalMoves(){
     console.log(theoreticalMoves)
     return theoreticalMoves
 }
-// buckets: { d0: ['c5','b6',...], d1: [...], ... } nearest->farthest
-// LUT: { "a2": {color: "white", ...}, ... }
-// originColor: "white" | "black"
 
 function filterRayBuckets(theoreticalMoves, LUT, originColor) {
     const valid = [];

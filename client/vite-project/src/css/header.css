@@ -126,7 +126,6 @@
     border-bottom: none;
 }
 
-/* --------- Desktop layout --------- */
 @media (min-width: 900px){
     .header-inner{
         display: grid;
