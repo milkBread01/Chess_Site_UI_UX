@@ -1,10 +1,11 @@
+
 export default function Footer() {
     return (
         <footer className = "footer">
             <div className = "footer-container">
 
                 <div className = "footer-image-section">
-                    <img src="#" alt="Chess Board" className = "footer-image"/>
+                    <img src="/logo.jpg" alt="Chess Board" className = "footer-image"/>
                 </div>
 
                 <div className = "footer-links-section">
