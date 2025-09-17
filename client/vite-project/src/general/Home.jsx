@@ -1,4 +1,7 @@
 import CTA from "./components/CTA_button_section";
+import image1 from "../assets/chess-4794265_1280.jpg";
+import image2 from "../assets/strategy-1080528_1280.jpg";
+//const image1 = "../assets/chess-4794265_1280.jpg"
 
 export default function Home() {
     const cardNames = ["pawn", "rook", "knight", "bishop", "queen", "king"];
@@ -81,7 +84,7 @@ export default function Home() {
                     <div className = "content-section content-section-light">
                         <div className = "section-container">
                             <div className = "image-container">
-                                <img src = "#" alt="Chess Learning" className = "section-image" />
+                                <img src = {image1} alt="Chess Learning" className = "section-image" />
                             </div>
 
                             <div className = "description-container">
@@ -91,7 +94,7 @@ export default function Home() {
                                     </h2>
                                     
                                     <p className = "description-text">
-                                        Master the basics of chess with our comprehensive learning system. From understanding how each piece moves to developing strategic thinking, our interactive lessons guide you through every step of your chess journey.
+                                        Learn the basics of chess with our color assisting system. See what effects your moves have more clearly. With the color coded system you'll be more careful as to where you move your pieces.
                                     </p>
 
                                     <p className = "description-text">
@@ -106,21 +109,21 @@ export default function Home() {
                     <div className = "content-section content-section-medium">
                         <div className = "section-container reverse">
                             <div className = "image-container">
-                                <img src = "#" alt = "Chess Strategy" className = "section-image" />
+                                <img src = {image2} alt = "Chess Strategy" className = "section-image" />
                             </div>
 
                             <div className = "description-container">
                                 <div className = "description-content">
                                     <h2 className = "description-title">
-                                        Advanced Strategy & Tactics
+                                        Strategy & Tactics
                                     </h2>
                                     
                                     <p className = "description-text">
-                                        Elevate your game with advanced chess strategies and tactical patterns. Learn opening principles, middle game planning, and endgame techniques that separate novice players from experienced competitors.
+                                        Learn opening principles, middle game planning, and endgame techniques that separate novice players from experienced competitors.
                                     </p>
 
                                     <p className = "description-text">
-                                        Practice with real game scenarios and develop the analytical skills needed to think several moves ahead and outmaneuver your opponents.
+                                        Develop the analytical skills needed to think several moves ahead and outmaneuver your opponents.
                                     </p>
                                 </div>
                             </div>

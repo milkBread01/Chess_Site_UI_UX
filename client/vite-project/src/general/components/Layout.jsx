@@ -20,6 +20,7 @@ import '../../css/captured-pieces.css';
 import '../../css/pop-up.css';
 import '../../css/promotion-menu.css';
 import '../../css/start-game-form.css';
+import '../../css/learn-page.css';
 
 export default function Layout() {
   return (

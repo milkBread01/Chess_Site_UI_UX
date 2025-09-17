@@ -1,0 +1,185 @@
+/* Main container */
+.learn-main {
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 0 20px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+    background-image: url("/diamond-upholstery.png"); 
+    background-repeat: repeat;
+    background-size: auto;
+    background-color: #353E43;
+}
+
+/* History section */
+.learn-history {
+    margin: 60px 0;
+}
+
+.history-header h2 {
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+    color: #2c3e50;
+    border-bottom: 3px solid #3498db;
+    padding-bottom: 10px;
+}
+
+.section-intro {
+    font-size: 1.2rem;
+    color: #555;
+    margin-bottom: 30px;
+    background: #f8f9fa;
+    padding: 25px;
+    border-radius: 8px;
+    border-left: 5px solid #3498db;
+}
+
+.section-intro em {
+    color: #8b4513;
+    font-weight: 600;
+}
+
+/* Pieces section */
+.learn-pieces {
+    margin: 60px 0;
+}
+
+.learn-piece-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 25px;
+    margin-top: 40px;
+}
+
+.learn-piece {
+    background: #fff;
+    border: 2px solid #e9ecef;
+    border-radius: 12px;
+    padding: 25px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.learn-piece:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    border-color: #3498db;
+}
+
+.learn-piece h3 {
+    font-size: 1.5rem;
+    color: #2c3e50;
+    margin-bottom: 15px;
+    border-bottom: 2px solid #ecf0f1;
+    padding-bottom: 8px;
+}
+
+.learn-piece p {
+    color: #666;
+    font-size: 1rem;
+}
+
+.learn-piece strong {
+    color: #27ae60;
+    font-weight: 600;
+}
+
+/* Color system section */
+.learn-color-sys {
+    margin: auto ;
+    width:70%;
+    background: #7a95b8;
+    padding: 40px;
+    border-radius: 12px;
+    border: 1px solid #dee2e6;
+    
+}
+.learn-color-sys header {
+    background-color: #212529;
+}
+.learn-color-sys > p {
+    font-size: 1.5rem;
+    margin-bottom: 30px;
+    color: #f2f2f2;
+}
+
+.color-sys-info {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+.color-sys-info h3 {
+    font-size: 1.3rem;
+    margin-bottom: 10px;
+    padding: 10px 15px;
+    border-radius: 6px;
+    color: #fff;
+    font-weight: 600;
+}
+
+/* Color-specific styling for headings */
+.color-sys-info h3:nth-of-type(1) {
+    background: #28a745; /* GREEN */
+}
+
+.color-sys-info h3:nth-of-type(2) {
+    background: #007bff; /* BLUE */
+}
+
+.color-sys-info h3:nth-of-type(3) {
+    background: #dc3545; /* RED */
+}
+
+.color-sys-info h3:nth-of-type(4) {
+    background: #6f42c1; /* PURPLE */
+}
+
+.color-sys-info h3:nth-of-type(5) {
+    background: #ffc107; /* GOLD */
+    color: #212529;
+}
+
+.color-sys-info p {
+    margin: 8px 0;
+    padding-left: 15px;
+    color: #ffffff;
+    font-size: 1.2rem;;
+}
+
+.color-sys-info p strong {
+    color: #2c3e50;
+}
+
+.color-sys-info h4 {
+    font-size: 1.2rem;
+    color: #495057;
+    margin-top: 30px;
+    margin-bottom: 15px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid #dee2e6;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .learn-main {
+        padding: 0 15px;
+    }
+
+    .learn-piece-container {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    .history-header h2 {
+        font-size: 2rem;
+    }
+
+    .learn-color-sys {
+        padding: 25px 20px;
+    }
+
+    .section-intro {
+        padding: 20px;
+        font-size: 1.1rem;
+    }
+}

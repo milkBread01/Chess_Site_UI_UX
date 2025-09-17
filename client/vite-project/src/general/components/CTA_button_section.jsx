@@ -1,5 +1,7 @@
-export default function CTA() {
+import { useNavigate } from "react-router-dom";
 
+export default function CTA() {
+    const navigate = useNavigate();    
     return (
         <>
             <section className = "cta-section">
@@ -9,7 +11,7 @@ export default function CTA() {
                     </h2>
                 </div>
                 <div className = "cta-button-container">
-                    <button className = "button-type2">
+                    <button className = "button-type2" onClick={() => navigate("/play")}>
                         Play Game
                     </button>
                 </div>
