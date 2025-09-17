@@ -28,7 +28,7 @@ export default function About() {
                                 This site was created to make learning and playing chess easier for everyone, especially beginners. By adding visual cues, you can explore moves easier and see potential consequences before making a decision.
                             </p>
                             <p>
-                                Our goal is to provide a place where casual players and learners can sharpen their skills, understand strategy.
+                                Our goal is to provide a place where casual players and learners can sharpen their skills and understand strategy.
                             </p>
                             <p>
                                 Whether you're new to the game or brushing up, this platform gives helps you improve and most importantly, have fun!
