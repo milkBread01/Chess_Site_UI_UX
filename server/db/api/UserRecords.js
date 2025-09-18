@@ -56,7 +56,7 @@ router.post('/register', async (req, res, next) => {
 
         // Check if username or email already exists
         const isExistingUser = await findByUsername({username}) || await findByEmail({email});
-        console.log("Is existing user:", isExistingUser);
+        //console.log("Is existing user:", isExistingUser);
         if (isExistingUser) {
             return res.status(409).json({ message: 'Username or email already in use.' });
 
@@ -72,7 +72,7 @@ router.post('/register', async (req, res, next) => {
 router.post('/login', async (req, res, next) => {
     try {
         const { username, password } = req.body;
-        console.log("Login attempt for username:", username);
+        //console.log("Login attempt for username:", username);
 
         if (!username || !password) {
             return res.status(400).send({ message: 'Username and password are required' });
@@ -84,21 +84,21 @@ router.post('/login', async (req, res, next) => {
             return res.status(400).send({ message: 'Invalid username format' });
         }
 
-        const user = await findByUsername({username}); // returns full user record or null
-        console.log("username given",username)
-        console.log("User found:", user); // Moved this after user is defined
+        const user = await findByUsername({username});
+        //console.log("username given",username)
+        //console.log("User found:", user); // Moved this after user is defined
 
         if (!user) {
-            console.log("User not found in database");
+            //console.log("User not found in database");
             return res.status(401).json({ message: 'Invalid credentials' });
         }
 
-        console.log("Calling getUserByUsername for authentication...");
+        //console.log("Calling getUserByUsername for authentication...");
         const authenticatedUser = await getUserByUsername({ username, password });
-        console.log("getUserByUsername result:", authenticatedUser);
+        //console.log("getUserByUsername result:", authenticatedUser);
 
         if (authenticatedUser === "Incorrect Credentials") {
-            console.log("Password verification failed");
+            //console.log("Password verification failed");
             return res.status(401).json({ message: 'Invalid credentials' });
         }
 
@@ -119,10 +119,10 @@ router.post('/login', async (req, res, next) => {
             sameSite: process.env.NODE_ENV === "production" ? "none" : "lax"
         };
 
-        console.log("Setting cookie with options:", cookieOptions);
+        //console.log("Setting cookie with options:", cookieOptions);
         res.cookie("token", token, cookieOptions);
 
-        console.log("Login successful, sending response");
+        //console.log("Login successful, sending response");
         return res.status(200).json({ 
             user: {
                 accountId: authenticatedUser.account_id, 
@@ -132,31 +132,32 @@ router.post('/login', async (req, res, next) => {
             } 
         });
     } catch (error) {
-        console.error("Login error:", error);
+        //console.error("Login error:", error);
         next(error);
     }
 });
 
+// get JWT token and verify using SECRET, if valid call next 
 function authenticateCookie(req, res, next) {
-    console.log('=== authenticateCookie called ===');
-    console.log('All cookies:', req.cookies);
+    //console.log('=== authenticateCookie called ===');
+    //console.log('All cookies:', req.cookies);
     
     const token = req.cookies?.token;
-    console.log('Token from cookie:', token ? 'Present' : 'Missing');
+    //console.log('Token from cookie:', token ? 'Present' : 'Missing');
     
     if (!token) {
-        console.log('No token found in cookies');
+        //console.log('No token found in cookies');
         return res.status(401).json({ message: 'Not authenticated' });
     }
 
-    console.log('Verifying token...');
+    // JWT.verify(token, SECRET, data)
     jsonwebtoken.verify(token, secret, (err, payload) => {
         if (err) {
-            console.error('Token verification error:', err.message);
+            //console.error('Token verification error:', err.message);
             return res.status(403).json({ message: 'Invalid token' });
         }
         
-        console.log('Token verified successfully. Payload:', payload);
+        //console.log('Token verified successfully. Payload:', payload);
         req.auth = payload; 
         next();
     });
@@ -164,29 +165,29 @@ function authenticateCookie(req, res, next) {
 
 router.get('/me', authenticateCookie, async (req, res, next) => {
     try {
-        console.log('=== /me endpoint called ===');
-        console.log('req.auth:', req.auth);
-        console.log('Username from token:', req.auth?.username);
+        //console.log('=== /me endpoint called ===');
+        //console.log('req.auth:', req.auth);
+        //console.log('Username from token:', req.auth?.username);
 
         if (!req.auth?.username) {
-            console.log('No username in auth payload');
+            //console.log('No username in auth payload');
             return res.status(400).json({ message: "No username in token" });
         }
 
-        console.log('Calling findByUsername...');
+        //console.log('Calling findByUsername...');
         const user = await findByUsername({
             username: req.auth.username
         });
 
-        console.log('findByUsername result:', user);
+        //console.log('findByUsername result:', user);
         if (!user) {
-            console.log('User not found in database');
+            //console.log('User not found in database');
             return res.status(404).json({ message: "User not found" });
         }
 
-        console.log('Calling getDetailsWithID with account_id:', user.account_id);
+        //console.log('Calling getDetailsWithID with account_id:', user.account_id);
         const userDetails = await getDetailsWithID({account_id: user.account_id});
-        console.log('getDetailsWithID result:', userDetails);
+        //console.log('getDetailsWithID result:', userDetails);
         
         const response = {
             user: {
@@ -197,19 +198,21 @@ router.get('/me', authenticateCookie, async (req, res, next) => {
             }
         };
         
-        console.log('Sending response:', response);
+        //console.log('Sending response:', response);
         res.json(response);
         
     } catch (e) {
-        console.error('Error in /me endpoint:', e);
-        console.error('Error stack:', e.stack);
         next(e);
     }
 });
 
-// --- LOGOUT: clear cookie ---
+// clear cookie
 router.post('/logout', (req, res) => {
-    res.clearCookie("token", { httpOnly: true, sameSite: "strict", secure: process.env.NODE_ENV === "production" });
+    res.clearCookie("token", {
+        httpOnly: true,
+        sameSite: "strict",
+        secure: process.env.NODE_ENV === "production"
+    });
     res.status(204).end();
 });
 
@@ -218,7 +221,7 @@ router.get('/records/:accountId', async (req, res, next) => {
     try {
         const records = await getRecordByAccountId(accountId);
         
-        // If no record exists, create a default one or return default values
+        // If no record exists, create a default record
         if (!records) {
             const defaultRecord = {
                 record_id: null,
