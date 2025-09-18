@@ -4,14 +4,16 @@
 }
 
 .site-header{
-    position: sticky; top:0; z-index:1000;
+    position: sticky;
+    top:0;
+    z-index:1000;
     background: var(--bg);
     border-bottom: 1px solid var(--ink);
 }
 
 .header-inner{
     display: grid;
-    grid-template-columns: 48px 1fr 48px; /* hamburger | brand | profile */
+    grid-template-columns: 48px 1fr 48px; /* hamburger | logo | profile */
     align-items: center;
     gap: .5rem;
     max-width: 100%;
@@ -67,7 +69,6 @@
     text-decoration: none;
     color: var(--ink);
     font-weight: 500;
-    transition: background 0.2s ease;
 }
 
 .profile-menu .dropdown a:hover {

@@ -21,7 +21,6 @@
     border-radius: 12px;
     box-shadow: 0 12px 36px rgba(0, 0, 0, 0.5);
     overflow: hidden;
-
     display: flex;
     flex-direction: column;
 
@@ -57,7 +56,6 @@
     text-align: center;
 }
 
-/* Button container (panel bottom) */
 .menu-btn-container{
     width: min(28rem, 92vw);
     background: var(--panel-bg);
@@ -70,11 +68,10 @@
     box-shadow: var(--panel-shadow);
     padding: 1rem 1.25rem 1.25rem;
     display: flex;
-    flex-direction: column;  /* buttons in rows (stacked) */
+    flex-direction: column;  /* buttons in rows, stacked */
     gap: 0.75rem;
 }
 
-/* Base button style (shared) */
 .menu-btn{
     appearance: none;
     border: 1px solid var(--btn-border);
@@ -87,70 +84,28 @@
     text-transform: uppercase;
     width: 100%;
     cursor: pointer;
-    transition: transform 120ms ease, box-shadow 120ms ease, background-color 120ms ease, border-color 120ms ease;
     box-shadow: 0 4px 12px rgba(0,0,0,0.25);
 }
 
-/* Focus ring for accessibility */
 .menu-btn:focus-visible{
-    outline: 3px solid rgba(91,147,238,0.65); /* bluish ring */
+    outline: 3px solid rgba(91,147,238,0.65); 
     outline-offset: 2px;
 }
 
-/* Press/hover states (shared) */
 .menu-btn:hover{
     transform: translateY(-1px);
-    box-shadow: 0 8px 22px rgba(0,0,0,0.35);
 }
 .menu-btn:active{
     transform: translateY(0);
-    box-shadow: 0 4px 12px rgba(0,0,0,0.25);
-}
-
-/* Color variants (only change hues; keep base style consistent) */
-.menu-btn.green{
-    background: linear-gradient(0deg, rgba(40,194,139,0.18), rgba(40,194,139,0.18)), var(--btn-bg);
-    border-color: rgba(40,194,139,0.6);
-}
-.menu-btn.green:hover{
-    background: linear-gradient(0deg, rgba(40,194,139,0.28), rgba(40,194,139,0.28)), var(--btn-bg);
-}
-
-.menu-btn.orange{
-    background: linear-gradient(0deg, rgba(245,158,11,0.18), rgba(245,158,11,0.18)), var(--btn-bg);
-    border-color: rgba(245,158,11,0.6);
-}
-.menu-btn.orange:hover{
-    background: linear-gradient(0deg, rgba(245,158,11,0.28), rgba(245,158,11,0.28)), var(--btn-bg);
-}
-
-.menu-btn.yellow{
-    background: linear-gradient(0deg, rgba(234,179,8,0.18), rgba(234,179,8,0.18)), var(--btn-bg);
-    border-color: rgba(234,179,8,0.6);
-}
-.menu-btn.yellow:hover{
-    background: linear-gradient(0deg, rgba(234,179,8,0.28), rgba(234,179,8,0.28)), var(--btn-bg);
 }
 
 .menu-btn.red{
-    background: linear-gradient(0deg, rgba(239,68,68,0.18), rgba(239,68,68,0.18)), var(--btn-bg);
+    background: #9b2d2d;
     border-color: rgba(239,68,68,0.6);
 }
 .menu-btn.red:hover{
-    background: linear-gradient(0deg, rgba(239,68,68,0.28), rgba(239,68,68,0.28)), var(--btn-bg);
+    background: #7a2424;
 }
-
-/* Responsive niceties */
-@media (max-width: 480px){
-    .menu-header, .menu-btn-container{
-        padding: 0.85rem 0.9rem;
-    }
-    .menu-btn{
-        padding: 0.8rem 0.9rem;
-        border-radius: 9px;
-    }
-}
-
 
 /* Start Pop UP */
 .begin-container{

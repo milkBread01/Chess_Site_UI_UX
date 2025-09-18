@@ -13,7 +13,7 @@ import GamePage from "./chess/ui/GamePage";
 export default function App() {
   return (
     <Routes>
-      <Route element={<Layout />}>
+      <Route element={<Layout />}> {/* for header and footer */}
         <Route path="/" element={<Home />} />
         <Route path="/home" element={<Home />} />
         <Route path="/about" element={<About />} />

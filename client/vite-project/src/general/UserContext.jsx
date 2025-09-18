@@ -13,6 +13,7 @@ export function UserProvider({ children }) {
     setLoading(true);
     setError(null);
     try {
+
       //console.log("Fetching from:", `${API_BASE}api/me`);
       const res = await fetch(`${API_BASE}api/me`, 
         { credentials: "include" }
@@ -23,15 +24,15 @@ export function UserProvider({ children }) {
         const data = await res.json();
         setUser(data.user ?? null);
 
+        // if not authenticated
       } else if (res.status === 401) {
 
         setUser(null);
 
       } else {
 
-        const errorText = await res.text();
         setUser(null);
-        setError(`Server error: ${res.status}`);
+        setError(`SERVER ERROR: ${res.status}`);
       }
     } catch (e) {
       //console.error("Network error:", e);
@@ -40,29 +41,39 @@ export function UserProvider({ children }) {
     } finally {
       setLoading(false);
     }
+
   }, []);
 
-  useEffect(() => { fetchMe(); }, [fetchMe]);
+  // attempt to fethc user
+  useEffect(() => {
+    fetchMe();
+
+  }, [fetchMe]);
 
   const login = async (username, password) => {
+
     const res = await fetch(`${API_BASE}api/login`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      credentials: "include",
+      /* tells the browser to send cookies w/ request, include cred, store cookies from response - needed to auth user*/
+      credentials: "include", 
       body: JSON.stringify({ username, password })
-    });
+    })
+
     if (!res.ok) {
-      const msg = (await res.json().catch(() => ({}))).message || "Login failed";
-      throw new Error(msg);
+      console.error("LOGIN FAILED")
     }
+
     await fetchMe();
   };
 
   const logout = async () => {
+
     await fetch(`${API_BASE}api/logout`, { 
       method: "POST", 
       credentials: "include" 
-    });
+    })
+
     setUser(null);
   };
 

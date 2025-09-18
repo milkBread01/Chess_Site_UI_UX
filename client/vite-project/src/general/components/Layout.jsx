@@ -28,7 +28,8 @@ export default function Layout() {
     <>
         <Header />
             <>
-                <Outlet />
+              {/* load main page content */}
+              <Outlet />
             </>
         <Footer />
     </>

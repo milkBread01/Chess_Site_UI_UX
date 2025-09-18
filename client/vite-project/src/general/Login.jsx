@@ -53,7 +53,6 @@ export default function Login() {
         setSubmitting(true);
 
         try{
-
             await login(formData.username, formData.password);
             navigate("/home");
             
