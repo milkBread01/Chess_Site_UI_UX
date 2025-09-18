@@ -137,7 +137,6 @@
     padding: .9rem 1.6rem;
     min-width: 220px;
     cursor: pointer;
-    transition: transform .12s ease, box-shadow .2s ease, filter .2s ease;
     box-shadow: 0 6px 14px rgba(53,62,67,.15);
 }
 

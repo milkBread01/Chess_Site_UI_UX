@@ -22,6 +22,15 @@ export default function Board({
                     <div className="board">
                         {ranks.map((rank, i) =>
                             files.map((file, j) => {
+                                /* 
+                                create 'current squaare' from nested loop
+                                look for piece in current square usign LUT
+                                create default color (alternating)
+                                search highlights for current piece 
+                                assign color to grid spot based on highlight or default to default color
+                                is selected?
+                                craete html
+                                 */
                                 const currentSquare = `${file}${rank}`;
                                 const currentPiece = pieces?.[currentSquare];
                                 const defaultColor = (i+j) % 2 === 1 ? "light" : "dark";

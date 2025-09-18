@@ -10,7 +10,12 @@
     background: var(--bg);
     border-bottom: 1px solid var(--ink);
 }
+/* 
 
+fr unit - The fr unit represents a fraction of the available space in the grid container. The next grid definition would create three equal width tracks that grow and shrink according to the available space
+
+
+*/
 .header-inner{
     display: grid;
     grid-template-columns: 48px 1fr 48px; /* hamburger | logo | profile */
@@ -44,7 +49,6 @@
     font-size: 3rem;
     color: var(--ink);
     cursor: pointer;
-
     margin-bottom:-0.5rem;
     padding:0.3rem 0.5rem;
 }
@@ -158,10 +162,14 @@
     }
     .nav a::after{
         content:"";
-        position:absolute; left:0; bottom:-6px;
-        width:100%; height:2px; background: var(--ink);
-        transform: scaleX(0); transform-origin: left;
-        transition: transform .2s ease;
+        position:absolute;
+        left:0;
+        bottom:-6px;
+        width:100%;
+        height:2px;
+        background: var(--ink);
+        transform: scaleX(0);
+        transform-origin: left;
     }
     .nav a:hover::after{
         transform: scaleX(1);
