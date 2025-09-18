@@ -19,7 +19,25 @@
     --peripheralsMenu: #628699ba;
 }
 /* 
-    calc()
+    The calc() CSS function lets you perform calculations when specifying CSS property values. It can be used with <length>, <frequency>, <angle>, <time>, <percentage>, <number>, <integer>, and <color-function> values.    
+
+    The grid-template-columns CSS property defines the line names and track sizing functions of the grid columns.
+
+    The repeat() CSS function represents a repeated fragment of the track list, allowing a large number of columns or rows that exhibit a recurring pattern to be written in a more compact form.
+
+    The min() CSS function lets you set the smallest (most negative) value from a list of comma-separated expressions as the value of a CSS property value. The min() function can be used anywhere a <length>, <frequency>, <angle>, <time>, <percentage>, <number>, or <integer> is allowed.
+
+    The grid-column CSS shorthand property specifies a grid item's size and location within a grid column by contributing a line, a span, or nothing (automatic) to its grid placement, thereby specifying the inline-start and inline-end edge of its grid area.
+        grid-column: <start-line> / <end-line>;
+    
+    The clamp() CSS function clamps a value within a range of values between a defined minimum bound and a maximum bound. 
+    Takes 3 parameters: 
+        a minimum value, a preferred value, and a maximum allowed value.
+
+    The scale() CSS function defines a transformation that resizes an element on the 2D plane. Because the amount of scaling is defined by a vector [sx, sy], it can resize the horizontal and vertical dimensions at different scales. Its result is a <transform-function> data type.
+        <width, height>
+        transform: scale<1.5, 1.5>
+        transform: scale<-1.5, 1.5> to mirror
 
 */
 .board-wrapper {
@@ -99,7 +117,6 @@
     font-size: clamp(0.6rem, 1.5vw, 0.9rem);
     line-height: 1;
     user-select: none;
-    transition: transform 120ms ease;
     position: relative;
     box-sizing: border-box;
 }
